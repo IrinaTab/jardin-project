@@ -1,0 +1,116 @@
+/* src/styles/utilities.css */
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+}
+
+.section {
+    /* Максимальный паддинг сверху/снизу — 40px */
+    padding-top: var(--section-padding-y);
+    padding-bottom: var(--section-padding-y);
+    position: relative;
+}
+
+/* ============================================
+   TEXT / ACCENT
+   ============================================ */
+
+.gold-accent,
+.gold-gradient-text,
+.heading-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+/* ============================================
+   GLASS PANEL
+   ============================================ */
+
+.glass-panel {
+    background: var(--surface-dark);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-gold-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+/* ============================================
+   CAPSULE — базовая 3D-капсула (светлая)
+   ============================================ */
+
+.capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    padding: 10px 26px;
+    border-radius: var(--radius-full);
+    position: relative;
+    cursor: default;
+
+    background: var(--gradient-capsule-light);
+    border: 1px solid var(--gold-dark-25);
+
+    box-shadow: var(--shadow-capsule-light);
+    text-shadow: 0 1px 0 var(--white-90);
+
+    transition:
+        transform var(--transition-capsule),
+        box-shadow var(--transition-capsule),
+        border-color var(--transition-capsule);
+}
+
+.capsule:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--gold-dark-45);
+    box-shadow: var(--shadow-capsule-light-hover);
+}
+
+.capsule--dark {
+    color: var(--gold-light);
+    background: var(--gradient-capsule-dark);
+    border: 1px solid var(--gold-dark-50);
+    box-shadow: var(--shadow-capsule-dark);
+    text-shadow: 0 1px 2px var(--black-70);
+}
+
+.capsule--dark:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    box-shadow: var(--shadow-capsule-dark-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .capsule,
+    .capsule--dark {
+        transition: none;
+    }
+}

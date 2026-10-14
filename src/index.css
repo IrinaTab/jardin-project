@@ -1,0 +1,28 @@
+/* src/index.css */
+
+@import './styles/variables.css';
+@import './styles/globals.css';
+@import './styles/utilities.css';
+
+/* Global smooth transitions & animations */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    animation: none;
+  }
+}

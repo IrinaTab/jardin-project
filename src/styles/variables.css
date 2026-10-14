@@ -1,0 +1,274 @@
+/* src/styles/variables.css */
+
+:root {
+   /* ============================================
+     CORE BACKGROUNDS
+     ============================================ */
+   --color-bg-light: #cfc5c5;
+   --color-bg-light-soft: #f5f1ea;
+   --color-bg-dark: #0000009c;
+   --color-bg-dark-deep: #070707f5;
+   --color-bg-dark-panel: #111111;
+   --color-bg-secondary: #121212;
+   --color-bg-tertiary: #181818;
+
+   /* ============================================
+     SURFACES
+     ============================================ */
+   --surface-dark: rgba(22, 22, 22, 0.75);
+   --surface-dark-hover: rgba(30, 30, 30, 0.9);
+   --surface-dark-input: rgba(25, 25, 25, 0.8);
+   --surface-dark-calc: rgba(14, 14, 14, 0.8);
+   --surface-dark-lightly: rgba(39, 39, 39, 1);
+
+   /* ============================================
+     GOLD PALETTE
+     ============================================ */
+   --gold-light: #F5D76E;
+   --gold: #D4AF37;
+   --gold-dark: #8B6914;
+   --gold-bronze: #B08C26;
+   --gold-champagne: #E5C25A;
+   --gold-soft: #C9A233;
+   --gold-highlight: #FFE999;
+
+   --gold-05: rgba(212, 175, 55, 0.05);
+   --gold-08: rgba(212, 175, 55, 0.08);
+   --gold-12: rgba(212, 175, 55, 0.12);
+   --gold-15: rgba(212, 175, 55, 0.15);
+   --gold-22: rgba(212, 175, 55, 0.22);
+   --gold-25: rgba(212, 175, 55, 0.25);
+   --gold-28: rgba(212, 175, 55, 0.28);
+   --gold-30: rgba(212, 175, 55, 0.30);
+   --gold-35: rgba(212, 175, 55, 0.35);
+   --gold-40: rgba(212, 175, 55, 0.40);
+   --gold-45: rgba(212, 175, 55, 0.45);
+   --gold-50: rgba(212, 175, 55, 0.5);
+   --gold-60: rgba(212, 175, 55, 0.6);
+   --gold-70: rgba(212, 175, 55, 0.7);
+   --gold-90: rgba(212, 175, 55, 0.9);
+
+   --gold-dark-00: rgba(139, 105, 20, 0);
+   --gold-dark-08: rgba(139, 105, 20, 0.08);
+   --gold-dark-12: rgba(139, 105, 20, 0.12);
+   --gold-dark-15: rgba(139, 105, 20, 0.15);
+   --gold-dark-18: rgba(139, 105, 20, 0.18);
+   --gold-dark-20: rgba(139, 105, 20, 0.2);
+   --gold-dark-22: rgba(139, 105, 20, 0.22);
+   --gold-dark-25: rgba(139, 105, 20, 0.25);
+   --gold-dark-28: rgba(139, 105, 20, 0.28);
+   --gold-dark-35: rgba(139, 105, 20, 0.35);
+   --gold-dark-42: rgba(139, 105, 20, 0.42);
+   --gold-dark-45: rgba(139, 105, 20, 0.45);
+   --gold-dark-50: rgba(139, 105, 20, 0.5);
+   --gold-dark-55: rgba(139, 105, 20, 0.55);
+   --gold-dark-90: rgba(139, 105, 20, 0.9);
+
+   /* ============================================
+     WHITE / BLACK
+     ============================================ */
+   --white-04: rgba(255, 255, 255, 0.04);
+   --white-05: rgba(255, 255, 255, 0.05);
+   --white-06: rgba(255, 255, 255, 0.06);
+   --white-08: rgba(255, 255, 255, 0.08);
+   --white-10: rgba(255, 255, 255, 0.1);
+   --white-12: rgba(255, 255, 255, 0.12);
+   --white-15: rgba(255, 255, 255, 0.15);
+   --white-25: rgba(255, 255, 255, 0.25);
+   --white-30: rgba(255, 255, 255, 0.3);
+   --white-35: rgba(255, 255, 255, 0.35);
+   --white-50: rgba(255, 255, 255, 0.5);
+   --white-70: rgba(255, 255, 255, 0.7);
+   --white-85: rgba(255, 255, 255, 0.85);
+   --white-90: rgba(255, 255, 255, 0.9);
+   --white-95: rgba(255, 255, 255, 0.95);
+   --white-100: rgba(255, 255, 255, 1);
+
+   --black-30: rgba(0, 0, 0, 0.3);
+   --black-40: rgba(0, 0, 0, 0.4);
+   --black-45: rgba(0, 0, 0, 0.45);
+   --black-50: rgba(0, 0, 0, 0.5);
+   --black-55: rgba(0, 0, 0, 0.55);
+   --black-60: rgba(0, 0, 0, 0.6);
+   --black-70: rgba(0, 0, 0, 0.7);
+   --black-80: rgba(0, 0, 0, 0.8);
+   --black-85: rgba(0, 0, 0, 0.85);
+   --black-90: rgba(0, 0, 0, 0.9);
+   --black-95: rgba(0, 0, 0, 0.95);
+
+   /* ============================================
+     TEXT
+     ============================================ */
+   --color-text: #ffffff;
+   --color-text-secondary: #dcdcdc;
+   --color-text-muted: #a0a0a0;
+   --color-text-dark: #1a1a1a;
+   --color-text-dark-soft: #2a2a2a;
+   --color-text-dark-muted: #5a5a5a;
+   --color-text-dark-subtle: #7a7a7a;
+
+   /* ============================================
+     BORDERS
+     ============================================ */
+   --color-border: #242424;
+   --color-border-light: rgba(255, 255, 255, 0.08);
+   --color-gold-border: rgba(212, 175, 55, 0.28);
+   --color-gold-border-subtle: rgba(212, 175, 55, 0.14);
+   --color-gold-border-strong: rgba(212, 175, 55, 0.45);
+
+   /* ============================================
+     GRADIENTS
+     ============================================ */
+   --gradient-gold: linear-gradient(135deg,
+         var(--gold-light) 0%,
+         var(--gold) 50%,
+         var(--gold-dark) 100%);
+   --gradient-gold-reverse: linear-gradient(135deg,
+         var(--gold-dark) 0%,
+         var(--gold) 50%,
+         var(--gold-light) 100%);
+   --gradient-gold-vertical: linear-gradient(180deg,
+         var(--gold-highlight) 0%,
+         var(--gold-light) 35%,
+         var(--gold) 70%,
+         var(--gold-bronze) 100%);
+   --gradient-gold-text: linear-gradient(135deg,
+         var(--gold-champagne) 0%,
+         var(--gold-soft) 40%,
+         var(--gold-dark) 100%);
+
+   --gradient-capsule-light: linear-gradient(180deg,
+         rgba(255, 255, 255, 0.95) 0%,
+         rgba(250, 245, 235, 0.85) 50%,
+         rgba(240, 232, 215, 0.9) 100%);
+
+   --gradient-capsule-dark: linear-gradient(180deg,
+         rgba(60, 55, 40, 0.95) 0%,
+         rgba(30, 26, 18, 0.98) 50%,
+         rgba(15, 12, 8, 1) 100%);
+
+   --gradient-dark: linear-gradient(180deg,
+         rgba(10, 10, 10, 0.95) 0%,
+         rgba(18, 18, 18, 0.98) 100%);
+   --gradient-glass: linear-gradient(135deg,
+         rgba(255, 255, 255, 0.04) 0%,
+         rgba(255, 255, 255, 0.01) 100%);
+
+   /* ============================================
+     TYPOGRAPHY — единый шрифт по проекту
+     ============================================ */
+   --font-heading: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   --font-accent: 'Montserrat', 'Inter', sans-serif;
+
+   /* ============================================
+     SIZES & SPACING — единая система
+     Базовая единица: --space-unit = 8px
+     Всё остальное производное от неё через calc()
+     ============================================ */
+   --space-unit: 0.5rem;
+   /* 8px */
+
+   /* Система спейсингов через calc() от базовой единицы */
+   --space-3xs: calc(var(--space-unit) * 0.25);
+   /*  2px */
+   --space-2xs: calc(var(--space-unit) * 0.5);
+   /*  4px */
+   --space-xs: calc(var(--space-unit) * 0.75);
+   /*  6px */
+   --space-sm: calc(var(--space-unit) * 1);
+   /*  8px */
+   --space-md: calc(var(--space-unit) * 1.5);
+   /* 12px */
+   --space-lg: calc(var(--space-unit) * 2);
+   /* 16px */
+   --space-xl: calc(var(--space-unit) * 2.5);
+   /* 20px */
+   --space-2xl: calc(var(--space-unit) * 3);
+   /* 24px */
+   --space-3xl: calc(var(--space-unit) * 4);
+   /* 32px */
+   --space-4xl: calc(var(--space-unit) * 5);
+   /* 40px */
+
+   /* Fluid spacing для секций — максимум 40px сверху/снизу */
+   --section-padding-y: clamp(20px, 2.5vw + 8px, 40px);
+   --section-gap: clamp(16px, 2vw, 32px);
+
+   /* Radii */
+   --radius-sm: 6px;
+   --radius-md: 12px;
+   --radius-lg: 18px;
+   --radius-full: 9999px;
+
+   /* Header / Logo */
+   --header-height: clamp(100px, 9vw + 20px, 140px);
+   --logo-height: clamp(80px, 8vw, 120px);
+
+   /* Container */
+   --container-max-width: 1240px;
+   --container-padding: clamp(1rem, 0.5rem + 2vw, 1.5rem);
+
+   /* ============================================
+     CAPSULE SHADOWS
+     ============================================ */
+   --shadow-capsule-light:
+      inset 0 1px 0 var(--white-100),
+      inset 0 -2px 0 var(--gold-dark-12),
+      0 2px 4px var(--gold-dark-15),
+      0 8px 20px var(--gold-dark-18),
+      0 16px 40px var(--gold-dark-12);
+
+   --shadow-capsule-light-hover:
+      inset 0 1px 0 var(--white-100),
+      inset 0 -2px 0 var(--gold-dark-15),
+      0 4px 8px rgba(139, 105, 20, 0.2),
+      0 12px 28px var(--gold-dark-25),
+      0 24px 56px var(--gold-dark-15);
+
+   --shadow-capsule-dark:
+      inset 0 1px 0 var(--gold-45),
+      inset 0 2px 0 var(--gold-15),
+      inset 0 -3px 0 var(--black-90),
+      inset 0 0 20px rgba(139, 105, 20, 0.2),
+      0 3px 6px var(--black-50),
+      0 10px 24px var(--black-45),
+      0 18px 40px var(--black-30);
+
+   --shadow-capsule-dark-hover:
+      inset 0 1px 0 rgba(245, 215, 110, 0.55),
+      inset 0 2px 0 rgba(245, 215, 110, 0.2),
+      inset 0 -3px 0 var(--black-95),
+      inset 0 0 24px var(--gold-30),
+      0 5px 10px var(--black-55),
+      0 14px 32px var(--black-50),
+      0 26px 56px rgba(0, 0, 0, 0.35);
+
+   /* ============================================
+     CARD SHADOWS
+     ============================================ */
+   --shadow-sm: 0 2px 8px var(--black-40);
+   --shadow-card: 0 10px 30px var(--black-50), 0 0 1px 1px var(--color-gold-border-subtle);
+   --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.22);
+   --backdrop-blur: blur(14px);
+
+   /* ============================================
+     TRANSITIONS
+     ============================================ */
+   --transition-fast: 0.18s ease;
+   --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+   --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+   --transition-capsule: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+   /* ============================================
+     FLUID TYPOGRAPHY — единый масштаб по проекту
+     ============================================ */
+   --text-xs: clamp(0.70rem, 0.66rem + 0.20vw, 0.80rem);
+   --text-sm: clamp(0.82rem, 0.78rem + 0.20vw, 0.92rem);
+   --text-base: clamp(0.95rem, 0.90rem + 0.25vw, 1.05rem);
+   --text-lg: clamp(1.05rem, 0.95rem + 0.50vw, 1.25rem);
+   --text-xl: clamp(1.20rem, 1.00rem + 1.00vw, 1.50rem);
+   --text-2xl: clamp(1.50rem, 1.20rem + 1.50vw, 2.00rem);
+   --text-3xl: clamp(1.90rem, 1.50rem + 2.00vw, 2.50rem);
+   --text-4xl: clamp(2.20rem, 1.70rem + 2.50vw, 3.20rem);
+}

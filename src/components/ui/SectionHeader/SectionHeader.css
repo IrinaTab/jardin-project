@@ -1,0 +1,174 @@
+/* src/components/ui/SectionHeader/SectionHeader.css */
+
+.section-header-wrap {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto var(--section-gap) auto;
+  position: relative;
+}
+
+.section-header-wrap--left {
+  text-align: left;
+  margin-left: 0;
+}
+
+/* ============================================
+   BADGE — 3D-капсула (light по умолчанию)
+   ============================================ */
+
+.section-header-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: var(--space-sm);
+  padding: 10px 26px;
+  border-radius: var(--radius-full);
+  position: relative;
+  cursor: default;
+  max-width: 100%;
+
+  background: var(--gradient-capsule-light);
+  border: 1px solid var(--gold-dark-25);
+  box-shadow: var(--shadow-capsule-light);
+  text-shadow: 0 1px 0 var(--white-90);
+
+  transition: var(--transition-capsule);
+  transition-property: transform, box-shadow, border-color;
+}
+
+.section-header-tag:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--gold-dark-45);
+  box-shadow: var(--shadow-capsule-light-hover);
+}
+
+.section-header-tag--dark {
+  color: var(--gold-light);
+  background: var(--gradient-capsule-dark);
+  border-color: var(--gold-dark-50);
+  box-shadow: var(--shadow-capsule-dark);
+  text-shadow: 0 1px 2px var(--black-70);
+}
+
+.section-header-tag--dark:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-capsule-dark-hover);
+}
+
+.section-header-tag__text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  text-align: center;
+}
+
+/* ============================================
+   TITLE
+   ============================================ */
+
+.section-header-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-dark);
+}
+
+.section-header-wrap--dark .section-header-title {
+  color: var(--color-text);
+}
+
+.section-header-title .gold-accent {
+  background: var(--gradient-gold-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter:
+    drop-shadow(0 1px 0 var(--white-90)) drop-shadow(0 0 8px var(--white-70)) drop-shadow(0 0 14px var(--white-50)) drop-shadow(0 2px 6px var(--gold-dark-35));
+
+  -webkit-text-stroke: 0.3px var(--gold-dark);
+  paint-order: stroke fill;
+}
+
+.section-header-wrap--dark .section-header-title .gold-accent {
+  filter:
+    drop-shadow(0 0 8px var(--gold-35)) drop-shadow(0 2px 6px var(--black-40));
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+}
+
+/* ============================================
+   DESC
+   ============================================ */
+
+.section-header-desc {
+  font-size: var(--text-base);
+  color: var(--color-text-dark-soft);
+  line-height: 1.65;
+  margin: 0 auto;
+  text-shadow:
+    0 0 6px var(--white-90),
+    0 0 14px var(--white-70),
+    0 1px 1px var(--white-90);
+}
+
+.section-header-wrap--dark .section-header-desc {
+  color: var(--color-text-secondary);
+  text-shadow: none;
+}
+
+/* ============================================
+   LINE
+   ============================================ */
+
+.section-header-line {
+  width: 50px;
+  height: 2px;
+  background: var(--gradient-gold);
+  margin: var(--space-md) auto 0 auto;
+  border-radius: 2px;
+  box-shadow:
+    0 0 4px var(--white-70),
+    0 0 10px var(--gold-40),
+    0 0 18px var(--gold-22);
+}
+
+.section-header-wrap--left .section-header-line {
+  margin-left: 0;
+}
+
+.section-header-wrap--dark .section-header-line {
+  box-shadow:
+    0 0 6px var(--gold-40),
+    0 0 12px var(--gold-22);
+}
+
+/* ============================================
+   RESPONSIVE — только для переноса текста капсулы
+   ============================================ */
+
+@media (max-width: 480px) {
+  .section-header-tag {
+    padding: 8px 18px;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+  }
+
+  .section-header-tag__text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.25;
+  }
+}

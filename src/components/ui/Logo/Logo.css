@@ -1,0 +1,63 @@
+/* src/components/ui/Logo/Logo.css */
+
+.site-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-self: flex-start;
+    /* ключевое — не центрируется во flex-родителе */
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform var(--transition-normal);
+    width: fit-content;
+    /* ширина по содержимому, а не растянутая */
+    max-width: 100%;
+
+    /* Автоматический размер: 80px на мобильных, 120px на десктопе */
+    height: clamp(80px, 8vw, 120px);
+    /* Пропорции исходного SVG: 685×382 */
+    aspect-ratio: 685 / 382;
+}
+
+.site-logo:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 6px;
+}
+
+.site-logo:hover {
+    transform: translateY(-2px);
+}
+
+.site-logo__img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 0 4px rgba(212, 175, 55, 0.35)) drop-shadow(0 0 12px rgba(212, 175, 55, 0.15));
+
+    transition: filter var(--transition-normal);
+}
+
+.site-logo:hover .site-logo__img {
+    filter:
+        drop-shadow(0 0 6px rgba(245, 215, 110, 0.55)) drop-shadow(0 0 18px rgba(245, 215, 110, 0.3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .site-logo,
+    .site-logo__img {
+        transition: none;
+    }
+
+    .site-logo:hover {
+        transform: none;
+    }
+}

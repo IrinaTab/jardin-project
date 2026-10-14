@@ -1,0 +1,291 @@
+/* src/components/ui/Button/Button.css */
+
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  font-family: var(--font-accent);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid transparent;
+
+  /* КЛЮЧЕВОЕ: разрешаем перенос строк + ограничиваем ширину */
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* ============================================
+   PRIMARY — 3D-золото
+   ============================================ */
+
+.custom-btn--primary {
+  background: var(--gradient-gold);
+  color: #0a0a0a;
+  border-color: var(--gold-light);
+  font-weight: 600;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -3px 0 rgba(139, 105, 20, 0.55),
+    inset 0 0 16px rgba(255, 240, 180, 0.25),
+    0 3px 6px rgba(139, 105, 20, 0.3),
+    0 10px 24px rgba(139, 105, 20, 0.3),
+    0 18px 40px rgba(139, 105, 20, 0.2);
+
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.4);
+}
+
+.custom-btn--primary:hover:not(:disabled) {
+  transform: translateY(-4px);
+  border-color: var(--gold-light);
+  filter: brightness(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(139, 105, 20, 0.6),
+    inset 0 0 20px rgba(255, 240, 180, 0.35),
+    0 5px 10px rgba(139, 105, 20, 0.35),
+    0 14px 32px rgba(139, 105, 20, 0.35),
+    0 26px 56px rgba(139, 105, 20, 0.25);
+}
+
+.custom-btn--primary:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -2px 0 rgba(139, 105, 20, 0.55),
+    0 2px 4px rgba(139, 105, 20, 0.3),
+    0 5px 12px rgba(139, 105, 20, 0.25),
+    0 10px 20px rgba(139, 105, 20, 0.15);
+}
+
+/* ============================================
+   OUTLINE — 3D-тёмное стекло
+   ============================================ */
+
+.custom-btn--outline {
+  color: var(--gold-light);
+  font-weight: 600;
+
+  background:
+    linear-gradient(180deg,
+      rgba(60, 55, 40, 0.95) 0%,
+      rgba(35, 30, 20, 0.98) 50%,
+      rgba(20, 16, 10, 1) 100%);
+  border: 1px solid var(--color-gold-border);
+
+  box-shadow:
+    inset 0 1px 0 rgba(212, 175, 55, 0.35),
+    inset 0 2px 0 rgba(212, 175, 55, 0.12),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 0 16px rgba(139, 105, 20, 0.15),
+    0 3px 6px rgba(0, 0, 0, 0.45),
+    0 10px 24px rgba(0, 0, 0, 0.4),
+    0 18px 40px rgba(0, 0, 0, 0.3);
+
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.custom-btn--outline:hover:not(:disabled) {
+  transform: translateY(-4px);
+  border-color: var(--color-gold);
+  color: var(--gold-light);
+
+  background:
+    linear-gradient(180deg,
+      rgba(35, 30, 20, 1) 0%,
+      rgba(20, 16, 10, 1) 50%,
+      rgba(8, 6, 3, 1) 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(245, 215, 110, 0.5),
+    inset 0 2px 0 rgba(245, 215, 110, 0.15),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.95),
+    inset 0 0 24px rgba(139, 105, 20, 0.3),
+    0 5px 10px rgba(0, 0, 0, 0.55),
+    0 14px 32px rgba(0, 0, 0, 0.5),
+    0 26px 56px rgba(0, 0, 0, 0.4);
+}
+
+.custom-btn--outline:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(212, 175, 55, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.85),
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 5px 12px rgba(0, 0, 0, 0.4),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   GHOST
+   ============================================ */
+
+.custom-btn--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.custom-btn--ghost:hover:not(:disabled) {
+  color: var(--gold-light);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ============================================
+   SIZES — адаптивные
+   ============================================ */
+
+.custom-btn--sm {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--text-xs);
+}
+
+.custom-btn--md {
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--text-sm);
+}
+
+.custom-btn--lg {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--text-base);
+}
+
+.custom-btn--full {
+  width: 100%;
+}
+
+.custom-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================
+   ИКОНКИ (мерцание + стрелка)
+   ============================================ */
+
+.btn-sparkle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform-origin: center center;
+  animation: sparkleTwinkle 2.4s ease-in-out infinite;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes sparkleTwinkle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 0 rgba(255, 240, 180, 0));
+  }
+
+  25% {
+    transform: translate(-1px, -1px) scale(1.08);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(255, 240, 180, 0.6));
+  }
+
+  50% {
+    transform: translate(-2px, -2px) scale(1.18);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 240, 180, 0.9));
+  }
+
+  75% {
+    transform: translate(-1px, -1px) scale(1.08);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(255, 240, 180, 0.6));
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 0 rgba(255, 240, 180, 0));
+  }
+}
+
+.custom-btn--primary:hover .btn-sparkle-icon {
+  animation-duration: 1.2s;
+}
+
+.btn-arrow-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform-origin: center center;
+  animation: arrowSlide 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes arrowSlide {
+  0% {
+    transform: translateX(0);
+  }
+
+  40% {
+    transform: translateX(5px);
+  }
+
+  60% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.custom-btn--outline:hover .btn-arrow-icon {
+  animation-duration: 0.9s;
+}
+
+/* ============================================
+   MOBILE — критично для длинных кнопок
+   ============================================ */
+
+@media (max-width: 480px) {
+  .custom-btn--lg {
+    /* На маленьких экранах паддинги меньше */
+    padding: var(--space-sm) var(--space-md);
+    /* Разрешаем многострочный текст */
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  /* Кнопки в столбик (flex-column) — занимают всю ширину */
+  .custom-btn--full {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .btn-sparkle-icon,
+  .btn-arrow-icon {
+    animation: none;
+  }
+
+  .custom-btn {
+    transition: none;
+  }
+}

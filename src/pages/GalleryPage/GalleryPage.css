@@ -1,0 +1,10 @@
+.gallery-page {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.gallery-page__intro {
+  text-align: center;
+  padding: 40px 0 20px 0;
+  background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, rgba(10, 10, 10, 0) 70%);
+}

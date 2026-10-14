@@ -1,0 +1,278 @@
+/* src/components/ui/ColorPicker/ColorPicker.css */
+
+.color-picker-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ============================================
+   SWATCHES GRID
+   ============================================ */
+
+.color-swatches-grid {
+  display: grid;
+  /* auto-fill с minmax(0, 1fr) — критично, чтобы дети не вылезали */
+  grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ============================================
+   SWATCH ITEM
+   ============================================ */
+
+.color-swatch-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface-dark-lightly);
+  border: 1px solid var(--white-08);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-align: left;
+
+  /* Не вылезает за пределы grid-ячейки */
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.color-swatch-item:hover {
+  background: var(--surface-dark-hover);
+  border-color: var(--gold-45);
+  transform: translateY(-2px);
+}
+
+.color-swatch-item--active {
+  background: var(--gold-12);
+  border-color: var(--gold);
+  box-shadow: 0 0 16px var(--gold-25);
+}
+
+/* ============================================
+   COLOR DOT
+   ============================================ */
+
+.color-dot-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--white-25);
+  box-shadow: inset 0 2px 4px var(--black-50);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.color-swatch-item--active .color-dot-indicator {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 8px var(--gold-60);
+}
+
+/* ============================================
+   META
+   ============================================ */
+
+.color-meta-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1;
+}
+
+.color-name-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.25;
+
+  /* Переносится при необходимости */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+
+  /* Не более 2 строк */
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.color-multiplier-tag {
+  font-size: 0.68rem;
+  color: var(--gold);
+  font-family: var(--font-accent);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.color-swatch-item--active .color-name-label {
+  color: var(--gold-light);
+}
+
+.color-swatch-item--active .color-multiplier-tag {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+/* ============================================
+   SELECTED PREVIEW
+   ============================================ */
+
+.color-selected-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-dark-lightly);
+  border: 1px solid var(--gold-28);
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+
+  box-shadow:
+    inset 0 1px 0 var(--white-05),
+    0 2px 6px var(--black-40);
+
+  min-width: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.color-preview-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1 1 180px;
+}
+
+.color-preview-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  border: 2px solid var(--white-100);
+  box-shadow:
+    0 0 0 1px var(--gold-60),
+    0 0 8px var(--gold-28);
+}
+
+.color-preview-text {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.color-preview-text strong {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.color-preview-badge {
+  font-size: 0.78rem;
+  color: var(--gold-light);
+  font-weight: 700;
+  font-family: var(--font-accent);
+  white-space: nowrap;
+  padding: 4px 10px;
+  background: var(--gold-12);
+  border: 1px solid var(--gold-28);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RESPONSIVE — мобильные ≤ 580px
+   ============================================ */
+
+@media (max-width: 580px) {
+
+  /* На узких экранах — одна карточка в ряд */
+  .color-swatches-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .color-swatch-item {
+    padding: 10px 12px;
+  }
+
+  .color-name-label {
+    font-size: 0.82rem;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+  }
+
+  .color-multiplier-tag {
+    font-size: 0.66rem;
+  }
+
+  .color-selected-preview {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .color-preview-left {
+    flex: 1 1 140px;
+    gap: 10px;
+  }
+
+  .color-preview-circle {
+    width: 24px;
+    height: 24px;
+  }
+
+  .color-preview-text {
+    font-size: 0.85rem;
+  }
+
+  .color-preview-badge {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — очень маленькие ≤ 380px
+   ============================================ */
+
+@media (max-width: 380px) {
+  .color-swatch-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .color-dot-indicator {
+    width: 20px;
+    height: 20px;
+  }
+
+  .color-name-label {
+    font-size: 0.78rem;
+  }
+
+  .color-preview-left {
+    flex: 1 1 100%;
+  }
+
+  .color-preview-text {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,46 @@
+.contact-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-choice-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(25, 25, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: #ffffff;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.contact-choice-item:hover {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: var(--color-gold);
+  transform: translateX(4px);
+}
+
+.contact-choice-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.contact-choice-icon {
+  color: var(--color-gold);
+}
+
+.contact-choice-title {
+  font-size: 1rem;
+  font-weight: 500;
+  display: block;
+}
+
+.contact-choice-sub {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
