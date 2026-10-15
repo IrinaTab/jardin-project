@@ -63,3 +63,8 @@ project-dump.txt
 # VERCEL
 # ============================================
 .vercel
+# Оригиналы изображений — конвертируются в WebP через scripts/convert-to-webp.mjs
+public/images/**/*.jpg
+public/images/**/*.jpeg
+public/images/**/*.JPG
+public/images/**/*.PNG

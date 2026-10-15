@@ -1,8 +1,15 @@
+/* src/components/ui/PhotoModal/PhotoModal.css */
+
 .photo-modal-wrap {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: center;
 }
+
+/* ============================================
+   PREVIEW
+   ============================================ */
 
 .photo-modal-preview-box {
   width: 100%;
@@ -21,33 +28,23 @@
   object-fit: contain;
 }
 
-.photo-modal-info {
+/* ============================================
+   ACTIONS
+   ============================================ */
+
+.photo-modal-actions {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 10px;
-}
-
-.photo-modal-text-box {
-  flex: 1;
-}
-
-.photo-modal-caption-title {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  color: var(--color-gold-light);
-  margin-bottom: 4px;
-}
-
-.photo-modal-caption-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
+  width: 100%;
 }
 
 @media (max-width: 600px) {
-  .photo-modal-info {
-    flex-direction: column;
-    align-items: stretch;
+  .photo-modal-actions {
+    justify-content: stretch;
+  }
+
+  .photo-modal-actions .custom-btn {
+    width: 100%;
   }
 }

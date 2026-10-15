@@ -1,3 +1,5 @@
+// src/components/ui/PhotoModal/PhotoModal.tsx
+
 import React from 'react';
 import './PhotoModal.css';
 import { Modal } from '../Modal';
@@ -40,12 +42,7 @@ export const PhotoModal: React.FC<PhotoModalProps> = ({ onOrderSimilar }) => {
           />
         </div>
 
-        <div className="photo-modal-info">
-          <div className="photo-modal-text-box">
-            <h4 className="photo-modal-caption-title">{activePhoto.title[language]}</h4>
-            <p className="photo-modal-caption-desc">{activePhoto.description[language]}</p>
-          </div>
-
+        <div className="photo-modal-actions">
           <Button
             variant="primary"
             size="md"

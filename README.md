@@ -26,3 +26,34 @@ npm run dev
 ```bash
 npm run build
 ```
+## 📸 Как добавить новое фото в галерею
+
+### 1. Подготовить фото
+
+- Формат: JPG/PNG (WebP генерируется автоматически)
+- Размер: до 800×1200 px, вес до 500 КБ
+- **Имя файла:** `work-N.jpg`, где N — следующий свободный номер
+  - Пример: если в папке 11 фото, новое — `work-12.jpg`
+
+Положите файл в `public/images/works/`.
+
+### 2. Добавить запись в `src/data/gallery.ts`
+
+Откройте `src/data/gallery.ts` и добавьте **один объект** в конец массива:
+
+```ts
+{
+  id: 'work-12',
+  imageUrl: '/images/works/work-12.webp',
+  title: {
+    ru: 'Заголовок на русском',
+    en: 'Title in English',
+    es: 'Título en español',
+  },
+  category: 'wigs',  // wigs | toppers | wefts | custom
+  description: {
+    ru: 'Описание на русском',
+    en: 'Description in English',
+    es: 'Descripción en español',
+  },
+},

@@ -1,3 +1,5 @@
+// scripts/convert-to-webp.mjs
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,39 +13,115 @@ console.log('--- Jardin WebP Image Conversion Script ---');
 console.log('Target directory:', imagesDir);
 
 /**
- * Utility script for image optimization and WebP conversion.
- * To use sharp for conversion, install sharp: `npm install -D sharp`
+ * Быстрый рекурсивный поиск файлов, требующих конвертации.
+ * Возвращает true, если есть хотя бы один .jpg/.jpeg/.png.
+ * Не загружает sharp — только читает файловую систему.
+ */
+function needsConversion(dir) {
+  if (!fs.existsSync(dir)) return false;
+
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      if (needsConversion(path.join(dir, entry.name))) return true;
+    } else if (/\.(jpe?g|png)$/i.test(entry.name)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Конвертирует все .jpg / .jpeg / .png в .webp с quality 85.
+ * Приводит имена файлов к нижнему регистру (важно для Linux-серверов / Vercel).
+ * Удаляет исходники после успешной конвертации.
  */
 async function runConversion() {
+  // Быстрая проверка — если конвертировать нечего, выходим сразу (без загрузки sharp)
+  if (!needsConversion(imagesDir)) {
+    console.log('✅ Нет файлов для конвертации. Все изображения уже в WebP.');
+    return;
+  }
+
+  let sharp;
+
   try {
-    const sharp = (await import('sharp')).default;
-    
-    function scanAndConvert(dir) {
-      if (!fs.existsSync(dir)) return;
-      const files = fs.readdirSync(dir, { withFileTypes: true });
-      for (const file of files) {
-        const fullPath = path.join(dir, file.name);
-        if (file.isDirectory()) {
-          scanAndConvert(fullPath);
-        } else if (/\.(jpe?g|png)$/i.test(file.name)) {
-          const webpPath = fullPath.replace(/\.(jpe?g|png)$/i, '.webp');
-          if (!fs.existsSync(webpPath)) {
-            sharp(fullPath)
-              .webp({ quality: 85 })
-              .toFile(webpPath)
-              .then(() => console.log(`Converted: ${file.name} -> WebP`))
-              .catch(err => console.error(`Error converting ${file.name}:`, err.message));
-          }
-        }
+    sharp = (await import('sharp')).default;
+  } catch {
+    console.log('');
+    console.log('❌ Sharp не установлен.');
+    console.log('   Установи его командой:');
+    console.log('   npm install -D sharp');
+    console.log('');
+    return;
+  }
+
+  let totalConverted = 0;
+  let totalSkipped = 0;
+  let totalErrors = 0;
+
+  async function scanAndConvert(dir) {
+    if (!fs.existsSync(dir)) return;
+
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+
+      if (entry.isDirectory()) {
+        await scanAndConvert(fullPath);
+        continue;
+      }
+
+      if (!/\.(jpe?g|png)$/i.test(entry.name)) continue;
+
+      const lowerName = entry.name.toLowerCase();
+      const webpName = lowerName.replace(/\.(jpe?g|png)$/i, '.webp');
+      const webpPath = path.join(dir, webpName);
+
+      if (fs.existsSync(webpPath)) {
+        console.log(`⏭  Уже есть: ${path.relative(projectRoot, webpPath)}`);
+        totalSkipped++;
+        continue;
+      }
+
+      try {
+        const stats = fs.statSync(fullPath);
+        const sizeKb = Math.round(stats.size / 1024);
+
+        await sharp(fullPath)
+          .webp({ quality: 85, effort: 4 })
+          .toFile(webpPath);
+
+        const newStats = fs.statSync(webpPath);
+        const newSizeKb = Math.round(newStats.size / 1024);
+        const ratio = Math.round((1 - newStats.size / stats.size) * 100);
+
+        console.log(
+          `✅ ${path.relative(projectRoot, fullPath)} (${sizeKb} КБ) → ` +
+          `${webpName} (${newSizeKb} КБ, −${ratio}%)`
+        );
+
+        fs.unlinkSync(fullPath);
+
+        totalConverted++;
+      } catch (err) {
+        console.error(`❌ Ошибка с ${entry.name}:`, err.message);
+        totalErrors++;
       }
     }
-
-    scanAndConvert(imagesDir);
-    console.log('WebP optimization complete.');
-  } catch {
-    console.log('Sharp is not installed. To convert images automatically:');
-    console.log('Run: npm install -D sharp && node scripts/convert-to-webp.mjs');
   }
+
+  await scanAndConvert(imagesDir);
+
+  console.log('');
+  console.log('--- Итог ---');
+  console.log(`Сконвертировано: ${totalConverted}`);
+  console.log(`Пропущено (уже есть WebP): ${totalSkipped}`);
+  console.log(`Ошибок: ${totalErrors}`);
+  console.log('Готово.');
 }
 
 runConversion();

@@ -1,3 +1,5 @@
+/* src/components/ui/GalleryItem/GalleryItem.css */
+
 .gallery-card {
   position: relative;
   border-radius: var(--radius-md);
@@ -15,16 +17,89 @@
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
+/* ============================================
+   IMAGE
+   ============================================ */
+
 .gallery-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: galleryImageIn 0.5s ease forwards;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes galleryImageIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .gallery-card:hover .gallery-card__img {
   transform: scale(1.06);
 }
+
+/* ============================================
+   SKELETON
+   ============================================ */
+
+.gallery-card__skeleton {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      rgba(30, 30, 30, 0.9) 0%,
+      rgba(20, 20, 20, 0.95) 50%,
+      rgba(30, 30, 30, 0.9) 100%);
+  overflow: hidden;
+}
+
+.gallery-card__skeleton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(212, 175, 55, 0.08) 50%,
+      transparent 60%,
+      transparent 100%);
+  animation: gallerySkeletonShimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes gallerySkeletonShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================
+   FALLBACK
+   ============================================ */
+
+.gallery-card__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #222 0%, #0d0d0d 100%);
+  color: var(--color-gold);
+}
+
+/* ============================================
+   OVERLAY
+   ============================================ */
 
 .gallery-card__overlay {
   position: absolute;
@@ -34,12 +109,27 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 24px;
+  padding-bottom: 56px;
+  /* запас под стрелку */
   opacity: 0.9;
-  transition: opacity var(--transition-normal);
+  transition: opacity var(--transition-normal),
+    background var(--transition-normal),
+    padding var(--transition-normal);
 }
 
 .gallery-card:hover .gallery-card__overlay {
   opacity: 1;
+}
+
+/* Раскрытая карточка — overlay на всю высоту, контент сверху */
+
+.gallery-card--expanded .gallery-card__overlay {
+  background: linear-gradient(180deg,
+      rgba(10, 10, 10, 0.92) 0%,
+      rgba(10, 10, 10, 0.96) 100%);
+  justify-content: flex-start;
+  padding-top: 24px;
+  overflow-y: auto;
 }
 
 .gallery-card__title {
@@ -53,12 +143,73 @@
 .gallery-card__desc {
   font-size: 0.82rem;
   color: var(--color-text-muted);
-  line-height: 1.4;
+  line-height: 1.5;
+
+  /* Обрезка на 2 строки по умолчанию */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
   overflow: hidden;
+
+  transition: all var(--transition-normal);
 }
+
+/* Раскрытая карточка — полное описание */
+
+.gallery-card--expanded .gallery-card__desc {
+  display: block;
+  line-clamp: unset;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+/* ============================================
+   EXPAND BUTTON
+   ============================================ */
+
+.gallery-card__expand-btn {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: var(--color-gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all var(--transition-normal);
+  z-index: 3;
+}
+
+.gallery-card__expand-btn:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--color-gold);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+}
+
+.gallery-card__expand-btn svg,
+.gallery-card__expand-btn .icon-wrapper {
+  transition: transform var(--transition-normal);
+}
+
+/* Раскрытая карточка — стрелка поворачивается вверх */
+
+.gallery-card--expanded .gallery-card__expand-btn svg,
+.gallery-card--expanded .gallery-card__expand-btn .icon-wrapper {
+  transform: rotate(180deg);
+}
+
+/* ============================================
+   ZOOM BUTTON
+   ============================================ */
 
 .gallery-card__zoom-btn {
   position: absolute;
@@ -77,9 +228,33 @@
   opacity: 0;
   transform: scale(0.85);
   transition: all var(--transition-normal);
+  z-index: 3;
 }
 
 .gallery-card:hover .gallery-card__zoom-btn {
   opacity: 1;
   transform: scale(1);
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card__img {
+    animation: none;
+    transition: none;
+  }
+
+  .gallery-card__skeleton::before {
+    animation: none;
+  }
+
+  .gallery-card,
+  .gallery-card__overlay,
+  .gallery-card__expand-btn,
+  .gallery-card__expand-btn svg,
+  .gallery-card__zoom-btn {
+    transition: none;
+  }
 }
