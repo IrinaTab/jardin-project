@@ -101,5 +101,13 @@ export interface ContactInfo {
   instagram: string;
   tiktok: string;
 }
+export interface GalleryItem {
+  id: string;
+  imageUrl: string;
+  title: LocalizedText;
+  category: string;
+  description: LocalizedText;
+  hideOrderButton?: boolean;  // ← новое
+}
 
 export type PageType = 'home' | 'gallery' | 'about' | 'contacts' | 'privacy' | 'calculator';

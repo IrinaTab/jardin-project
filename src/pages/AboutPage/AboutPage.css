@@ -36,8 +36,9 @@
 .about-photo {
   position: relative;
   width: 100%;
-  height: 100%;
-  min-height: 420px;
+  /* Контейнер принимает пропорции фото — без чёрных полос */
+  aspect-ratio: 4 / 5;
+  min-height: 320px;
   border-radius: clamp(20px, 3vw, 32px);
   /* Разделяем слои: glow позади, img спереди */
   isolation: isolate;
@@ -87,7 +88,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  /* Фокус на лице/верхней части кадра — при обрезке голова не потеряется */
+  object-position: center 30%;
   border-radius: inherit;
 
   box-shadow:
@@ -360,6 +362,161 @@
 }
 
 /* ============================================
+   МАСТЕРСКАЯ — фото с туманным бордером
+   ============================================ */
+
+.about-showcase__photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: default;
+}
+
+/* ---------- Туманный ореол ---------- */
+
+.about-showcase__photo-glow {
+  position: absolute;
+  inset: -18px;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(ellipse at center,
+      rgba(245, 215, 110, 0.45) 0%,
+      rgba(212, 175, 55, 0.28) 35%,
+      rgba(139, 105, 20, 0.14) 65%,
+      transparent 100%);
+
+  filter: blur(20px);
+  opacity: 0.8;
+  transition: opacity var(--transition-normal), filter var(--transition-normal);
+  will-change: opacity, filter;
+}
+
+/* ---------- Изображение ---------- */
+
+.about-showcase__photo-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 0 20px rgba(245, 215, 110, 0.12),
+    0 12px 40px rgba(139, 105, 20, 0.32),
+    0 6px 18px rgba(0, 0, 0, 0.22);
+
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.about-showcase__photo:hover .about-showcase__photo-img {
+  transform: scale(1.02);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    inset 0 0 24px rgba(245, 215, 110, 0.22),
+    0 20px 56px rgba(139, 105, 20, 0.48),
+    0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.about-showcase__photo:hover .about-showcase__photo-glow {
+  opacity: 1;
+  filter: blur(28px);
+}
+
+/* ---------- Подпись внизу ---------- */
+
+.about-showcase__photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 40px 20px 18px 20px;
+
+  background: linear-gradient(180deg,
+      rgba(10, 10, 10, 0) 0%,
+      rgba(10, 10, 10, 0.72) 55%,
+      rgba(10, 10, 10, 0.92) 100%);
+
+  color: #ffffff;
+  font-family: var(--font-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+/* ============================================
+   ZOOM BUTTON — как в галерее
+   ============================================ */
+
+.about-showcase__zoom-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  background: rgba(10, 10, 10, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--color-gold-light);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.about-showcase__photo:hover .about-showcase__zoom-btn,
+.about-showcase__photo:focus-visible .about-showcase__zoom-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.about-showcase__zoom-btn:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--color-gold);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+}
+
+/* Также при hover на карточку — курсор "лупа" на области фото */
+.about-showcase__photo {
+  cursor: pointer;
+}
+
+.about-showcase__photo:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 4px;
+}
+
+/* Плавное увеличение при hover */
+.about-showcase__photo:hover .about-showcase__photo-img {
+  transform: scale(1.03);
+}
+
+/* ============================================
    RESPONSIVE — планшет
    ============================================ */
 
@@ -372,7 +529,7 @@
   .about-photo {
     max-width: 420px;
     margin: 0 auto;
-    min-height: 380px;
+    /* На планшете — тот же aspect-ratio 4/5, что и в desktop */
   }
 
   .about-values-list,
@@ -415,7 +572,7 @@
 
   .about-photo {
     max-width: 320px;
-    min-height: 340px;
+    /* aspect-ratio остаётся 4/5 */
   }
 
   .about-standards-card {
@@ -445,7 +602,7 @@
 
   .about-photo {
     max-width: 280px;
-    min-height: 300px;
+    /* aspect-ratio остаётся 4/5 */
   }
 
   .about-photo__glow {

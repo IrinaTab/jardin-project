@@ -42,16 +42,18 @@ export const PhotoModal: React.FC<PhotoModalProps> = ({ onOrderSimilar }) => {
           />
         </div>
 
-        <div className="photo-modal-actions">
-          <Button
-            variant="primary"
-            size="md"
-            onClick={handleOrder}
-            icon={<Icon name="sparkles" size={16} />}
-          >
-            {t.gallery.requestSimilar}
-          </Button>
-        </div>
+        {!activePhoto.hideOrderButton && (
+          <div className="photo-modal-actions">
+            <Button
+              variant="primary"
+              size="md"
+              onClick={handleOrder}
+              icon={<Icon name="sparkles" size={16} />}
+            >
+              {t.gallery.requestSimilar}
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

@@ -1,12 +1,14 @@
 // src/pages/AboutPage/AboutPage.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import './AboutPage.css';
-import { PageType } from '../../types';
+import { PageType, GalleryItem } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useLanguage } from '../../context/LanguageContext';
+import { useModal } from '../../context/ModalContext';
 import { SectionHeader } from '../../components/ui/SectionHeader';
 import { CTABanner } from '../../components/sections/CTA';
+import { Icon } from '../../components/ui/Icon';
 
 export interface AboutPageProps {
   onNavigate: (page: PageType) => void;
@@ -14,15 +16,44 @@ export interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
+  const { openPhotoModal } = useModal();
   useDocumentTitle(t.aboutPage.title);
 
   const [photoError, setPhotoError] = useState(false);
+
+  /**
+   * Объект, совместимый с `GalleryItem` — передаётся в `PhotoModal`
+   * при клике на фото мастерской.
+   */
+  const atelierPhoto: GalleryItem = useMemo(
+    () => ({
+      id: 'atelier-photo',
+      imageUrl: '/images/atelier.webp',
+      category: 'custom',
+      title: {
+        ru: 'Мастерская Jardin',
+        en: 'Jardin Workshop',
+        es: 'Taller Jardin',
+      },
+      description: {
+        ru: 'Рабочее пространство ателье: инструменты, палитры, эскизы и готовые изделия. Здесь рождается каждая работа.',
+        en: 'The atelier workspace: tools, palettes, sketches and finished pieces. Every creation is born here.',
+        es: 'El espacio de trabajo del atelier: herramientas, paletas, bocetos y piezas terminadas. Cada obra nace aquí.',
+      },
+      hideOrderButton: true
+    }),
+
+    []
+  );
+
+  const handleOpenAtelierPhoto = () => {
+    openPhotoModal(atelierPhoto);
+  };
 
   return (
     <div className="about-page fade-in">
       <section className="section about-main-section">
         <div className="container">
-          {/* HERO — заголовок страницы */}
           <div className="about-hero">
             <SectionHeader
               badge={t.aboutPage.badge}
@@ -31,9 +62,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             />
           </div>
 
-          {/* MAIN GRID — фото слева (туманный бордер), контент справа */}
           <div className="about-main-grid">
-            {/* ЛЕВАЯ КОЛОНКА — фото мастера с туманным бордером */}
             <div className="about-photo">
               <div className="about-photo__glow" aria-hidden />
               {!photoError ? (
@@ -55,13 +84,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               )}
             </div>
 
-            {/* ПРАВАЯ КОЛОНКА — заголовок, стандарты, текст */}
             <div className="about-content">
               <h3 className="about-content__heading">
                 {t.aboutPage.heading}
               </h3>
 
-              {/* Карточка стандартов */}
               <div className="about-standards-card">
                 <h4 className="about-standards-card__title">
                   {t.aboutPage.standardsTitle}
@@ -82,7 +109,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Текстовые абзацы */}
               <div className="about-content__text">
                 <p>{t.aboutPage.p1}</p>
                 <p>{t.aboutPage.p2}</p>
@@ -113,7 +139,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* ПЛЕЙСХОЛДЕР — мастерская */}
+      {/* МАСТЕРСКАЯ — фото с zoom + плейсхолдеры */}
       <section className="section about-showcase-section">
         <div className="container">
           <SectionHeader
@@ -123,9 +149,48 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           />
 
           <div className="about-showcase__grid">
-            <div className="about-showcase__placeholder">
-              <span>{t.aboutPage.showcase1}</span>
+            {/* Фото мастерской — кликабельно, открывается в PhotoModal */}
+            <div
+              className="about-showcase__photo"
+              onClick={handleOpenAtelierPhoto}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenAtelierPhoto();
+                }
+              }}
+              aria-label={t.gallery.zoomPhoto}
+            >
+              <div className="about-showcase__photo-glow" aria-hidden />
+              <img
+                src="/images/atelier.webp"
+                alt={t.aboutPage.showcase1}
+                className="about-showcase__photo-img"
+                loading="lazy"
+                decoding="async"
+              />
+
+              {/* Кнопка-лупа — как в галерее */}
+              <button
+                type="button"
+                className="about-showcase__zoom-btn"
+                aria-label={t.gallery.zoomPhoto}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenAtelierPhoto();
+                }}
+              >
+                <Icon name="zoom" size={16} />
+              </button>
+
+              <div className="about-showcase__photo-caption">
+                {t.aboutPage.showcase1}
+              </div>
             </div>
+
+            {/* Плейсхолдеры для будущих фото и видео */}
             <div className="about-showcase__placeholder">
               <span>{t.aboutPage.showcase2}</span>
             </div>
