@@ -26,7 +26,8 @@ export type IconName =
   | 'arrowRight'
   | 'arrowUp'
   | 'zoom'
-  | 'chevronDown';
+  | 'chevronDown'
+  | 'play';
 
 export const iconPaths: Record<IconName, (props: React.SVGProps<SVGSVGElement>) => React.ReactElement> = {
   cart: (props) => (
@@ -190,6 +191,17 @@ export const iconPaths: Record<IconName, (props: React.SVGProps<SVGSVGElement>) 
       {...props}
     >
       <polyline points="6 9 12 15 18 9" />
+    </svg>
+  ),
+  play: (props) => (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M6 4.5v15a1 1 0 0 0 1.5.87l13-7.5a1 1 0 0 0 0-1.74l-13-7.5A1 1 0 0 0 6 4.5z" />
     </svg>
   ),
 };

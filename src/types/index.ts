@@ -107,7 +107,14 @@ export interface GalleryItem {
   title: LocalizedText;
   category: string;
   description: LocalizedText;
-  hideOrderButton?: boolean;  // ← новое
+  hideOrderButton?: boolean;
+}
+export interface VideoItem {
+  id: string;
+  videoUrl: string;
+  posterUrl?: string;
+  title: LocalizedText;
+  description?: LocalizedText;
 }
 
 export type PageType = 'home' | 'gallery' | 'about' | 'contacts' | 'privacy' | 'calculator';

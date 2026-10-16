@@ -10,6 +10,7 @@ import { Footer } from './components/layout/Footer';
 import { ScrollToTopButton } from './components/layout/ScrollToTop';
 import { CartModal } from './components/ui/CartModal';
 import { PhotoModal } from './components/ui/PhotoModal';
+import { VideoModal } from './components/ui/VideoModal';
 import { RequestFormModal } from './components/ui/RequestFormModal';
 import { ContactChoiceModal } from './components/ui/ContactChoiceModal';
 
@@ -80,6 +81,7 @@ const AppContent: React.FC = () => {
           handleNavigate('calculator');
         }}
       />
+      <VideoModal />
       <RequestFormModal onNavigateToPrivacy={() => handleNavigate('privacy')} />
       <ContactChoiceModal />
     </div>

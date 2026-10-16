@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import './AboutPage.css';
-import { PageType, GalleryItem } from '../../types';
+import { PageType, GalleryItem, VideoItem } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useLanguage } from '../../context/LanguageContext';
 import { useModal } from '../../context/ModalContext';
@@ -16,14 +16,13 @@ export interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
-  const { openPhotoModal } = useModal();
+  const { openPhotoModal, openVideoModal } = useModal();
   useDocumentTitle(t.aboutPage.title);
 
   const [photoError, setPhotoError] = useState(false);
 
   /**
-   * Объект, совместимый с `GalleryItem` — передаётся в `PhotoModal`
-   * при клике на фото мастерской.
+   * Фото мастерской — открывается в PhotoModal по клику.
    */
   const atelierPhoto: GalleryItem = useMemo(
     () => ({
@@ -40,15 +39,59 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         en: 'The atelier workspace: tools, palettes, sketches and finished pieces. Every creation is born here.',
         es: 'El espacio de trabajo del atelier: herramientas, paletas, bocetos y piezas terminadas. Cada obra nace aquí.',
       },
-      hideOrderButton: true
+      hideOrderButton: true,
     }),
-
     []
   );
 
-  const handleOpenAtelierPhoto = () => {
-    openPhotoModal(atelierPhoto);
-  };
+  /**
+   * Видео процесса — открывается в VideoModal по клику.
+   */
+  const processVideo: VideoItem = useMemo(
+    () => ({
+      id: 'atelier-process-video',
+      videoUrl: '/videos/atelier-process.mp4',
+      posterUrl: '/videos/atelier-process-poster.webp',
+      title: {
+        ru: 'Видео процесса',
+        en: 'Process Video',
+        es: 'Vídeo del Proceso',
+      },
+      description: {
+        ru: 'Как создаётся постижерное изделие: от подбора волос до финальной тамбуровки.',
+        en: 'How a postiche piece is made: from hair selection to final hand-ventilation.',
+        es: 'Cómo se elabora una pieza posticera: desde la selección del cabello hasta la ventilación final.',
+      },
+    }),
+    []
+  );
+
+  /**
+   * Фото «Детали работы» — открывается в PhotoModal по клику.
+   */
+  const detailsPhoto: GalleryItem = useMemo(
+    () => ({
+      id: 'atelier-details-photo',
+      imageUrl: '/images/atelier-details.webp',
+      category: 'custom',
+      title: {
+        ru: 'Детали работы',
+        en: 'Work Details',
+        es: 'Detalles del Trabajo',
+      },
+      description: {
+        ru: 'Крупный план: ручная тамбуровка, микро-сетка, инструменты мастера. Именно из этих мельчайших деталей складывается качество изделия.',
+        en: 'Close-up: hand ventilation, micro-lace, master\'s tools. The smallest details shape the quality of every piece.',
+        es: 'Primer plano: ventilación a mano, micro-tul, herramientas de la maestra. Los detalles más pequeños forman la calidad de cada pieza.',
+      },
+      hideOrderButton: true,
+    }),
+    []
+  );
+
+  const handleOpenAtelierPhoto = () => openPhotoModal(atelierPhoto);
+  const handleOpenProcessVideo = () => openVideoModal(processVideo);
+  const handleOpenDetailsPhoto = () => openPhotoModal(detailsPhoto);
 
   return (
     <div className="about-page fade-in">
@@ -139,7 +182,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* МАСТЕРСКАЯ — фото с zoom + плейсхолдеры */}
+      {/* МАСТЕРСКАЯ — фото мастерской, видео процесса, фото деталей */}
       <section className="section about-showcase-section">
         <div className="container">
           <SectionHeader
@@ -149,7 +192,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           />
 
           <div className="about-showcase__grid">
-            {/* Фото мастерской — кликабельно, открывается в PhotoModal */}
+            {/* 1. Фото мастерской */}
             <div
               className="about-showcase__photo"
               onClick={handleOpenAtelierPhoto}
@@ -171,8 +214,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 loading="lazy"
                 decoding="async"
               />
-
-              {/* Кнопка-лупа — как в галерее */}
               <button
                 type="button"
                 className="about-showcase__zoom-btn"
@@ -184,18 +225,84 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               >
                 <Icon name="zoom" size={16} />
               </button>
-
               <div className="about-showcase__photo-caption">
                 {t.aboutPage.showcase1}
               </div>
             </div>
 
-            {/* Плейсхолдеры для будущих фото и видео */}
-            <div className="about-showcase__placeholder">
-              <span>{t.aboutPage.showcase2}</span>
+            {/* 2. Видео процесса — с кнопкой play */}
+            <div
+              className="about-showcase__photo"
+              onClick={handleOpenProcessVideo}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenProcessVideo();
+                }
+              }}
+              aria-label={t.aboutPage.showcase2}
+            >
+              <div className="about-showcase__photo-glow" aria-hidden />
+
+              {/* Poster как фон карточки */}
+              <video
+                className="about-showcase__photo-img"
+                src="/videos/atelier-process.mp4"
+                poster="/videos/atelier-process-poster.webp"
+                muted
+                playsInline
+                preload="metadata"
+                aria-hidden
+              />
+
+              {/* Кнопка play по центру */}
+              <div className="about-showcase__play-btn" aria-hidden>
+                <Icon name="play" size={28} />
+              </div>
+
+              <div className="about-showcase__photo-caption">
+                {t.aboutPage.showcase2}
+              </div>
             </div>
-            <div className="about-showcase__placeholder">
-              <span>{t.aboutPage.showcase3}</span>
+
+            {/* 3. Фото деталей работы */}
+            <div
+              className="about-showcase__photo"
+              onClick={handleOpenDetailsPhoto}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenDetailsPhoto();
+                }
+              }}
+              aria-label={t.gallery.zoomPhoto}
+            >
+              <div className="about-showcase__photo-glow" aria-hidden />
+              <img
+                src="/images/atelier-details.webp"
+                alt={t.aboutPage.showcase3}
+                className="about-showcase__photo-img"
+                loading="lazy"
+                decoding="async"
+              />
+              <button
+                type="button"
+                className="about-showcase__zoom-btn"
+                aria-label={t.gallery.zoomPhoto}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenDetailsPhoto();
+                }}
+              >
+                <Icon name="zoom" size={16} />
+              </button>
+              <div className="about-showcase__photo-caption">
+                {t.aboutPage.showcase3}
+              </div>
             </div>
           </div>
         </div>

@@ -1,10 +1,16 @@
+// src/context/ModalContext.tsx
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { GalleryItem, Product } from '../types';
+import { GalleryItem, Product, VideoItem } from '../types';
 
 interface ModalContextType {
   activePhoto: GalleryItem | null;
   openPhotoModal: (item: GalleryItem) => void;
   closePhotoModal: () => void;
+
+  activeVideo: VideoItem | null;
+  openVideoModal: (item: VideoItem) => void;
+  closeVideoModal: () => void;
 
   isRequestModalOpen: boolean;
   requestModalTitle: string;
@@ -25,6 +31,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activePhoto, setActivePhoto] = useState<GalleryItem | null>(null);
+  const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [requestModalTitle, setRequestModalTitle] = useState('');
   const [isContactChoiceOpen, setIsContactChoiceOpen] = useState(false);
@@ -36,6 +43,9 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const openPhotoModal = (item: GalleryItem) => setActivePhoto(item);
   const closePhotoModal = () => setActivePhoto(null);
+
+  const openVideoModal = (item: VideoItem) => setActiveVideo(item);
+  const closeVideoModal = () => setActiveVideo(null);
 
   const openRequestModal = (title?: string) => {
     setRequestModalTitle(title || '');
@@ -64,6 +74,9 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         activePhoto,
         openPhotoModal,
         closePhotoModal,
+        activeVideo,
+        openVideoModal,
+        closeVideoModal,
         isRequestModalOpen,
         requestModalTitle,
         openRequestModal,
