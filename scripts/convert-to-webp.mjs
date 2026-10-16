@@ -7,15 +7,21 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
-const imagesDir = path.join(projectRoot, 'public', 'images');
+
+/**
+ * Список папок, где искать изображения для конвертации.
+ * Каждая будет рекурсивно обработана.
+ */
+const TARGET_DIRS = [
+  path.join(projectRoot, 'public', 'images'),
+  path.join(projectRoot, 'public', 'videos'),
+];
 
 console.log('--- Jardin WebP Image Conversion Script ---');
-console.log('Target directory:', imagesDir);
+TARGET_DIRS.forEach((dir) => console.log('Target directory:', dir));
 
 /**
  * Быстрый рекурсивный поиск файлов, требующих конвертации.
- * Возвращает true, если есть хотя бы один .jpg/.jpeg/.png.
- * Не загружает sharp — только читает файловую систему.
  */
 function needsConversion(dir) {
   if (!fs.existsSync(dir)) return false;
@@ -33,27 +39,21 @@ function needsConversion(dir) {
   return false;
 }
 
-/**
- * Конвертирует все .jpg / .jpeg / .png в .webp с quality 85.
- * Приводит имена файлов к нижнему регистру (важно для Linux-серверов / Vercel).
- * Удаляет исходники после успешной конвертации.
- */
 async function runConversion() {
-  // Быстрая проверка — если конвертировать нечего, выходим сразу (без загрузки sharp)
-  if (!needsConversion(imagesDir)) {
+  // Быстрая проверка — если конвертировать нечего, выходим без загрузки sharp
+  const hasWork = TARGET_DIRS.some((dir) => needsConversion(dir));
+  if (!hasWork) {
     console.log('✅ Нет файлов для конвертации. Все изображения уже в WebP.');
     return;
   }
 
   let sharp;
-
   try {
     sharp = (await import('sharp')).default;
   } catch {
     console.log('');
     console.log('❌ Sharp не установлен.');
-    console.log('   Установи его командой:');
-    console.log('   npm install -D sharp');
+    console.log('   Установи: npm install -D sharp');
     console.log('');
     return;
   }
@@ -105,7 +105,6 @@ async function runConversion() {
         );
 
         fs.unlinkSync(fullPath);
-
         totalConverted++;
       } catch (err) {
         console.error(`❌ Ошибка с ${entry.name}:`, err.message);
@@ -114,7 +113,9 @@ async function runConversion() {
     }
   }
 
-  await scanAndConvert(imagesDir);
+  for (const dir of TARGET_DIRS) {
+    await scanAndConvert(dir);
+  }
 
   console.log('');
   console.log('--- Итог ---');
