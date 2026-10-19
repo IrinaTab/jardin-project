@@ -8,6 +8,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useModal } from '../../context/ModalContext';
 import { SectionHeader } from '../../components/ui/SectionHeader';
 import { CTABanner } from '../../components/sections/CTA';
+import { SocialSubscribeBanner } from '../../components/sections/SocialSubscribeBanner';
 import { Icon } from '../../components/ui/Icon';
 
 export interface AboutPageProps {
@@ -95,6 +96,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="about-page fade-in">
+      {/* ============================================
+          HERO + ОСНОВНОЙ КОНТЕНТ
+          ============================================ */}
       <section className="section about-main-section">
         <div className="container">
           <div className="about-hero">
@@ -106,27 +110,35 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="about-main-grid">
-            <div className="about-photo">
-              <div className="about-photo__glow" aria-hidden />
-              {!photoError ? (
-                <img
-                  src="/images/master.webp"
-                  alt="Мастер ателье Jardin"
-                  className="about-photo__img"
-                  loading="lazy"
-                  decoding="async"
-                  onError={() => setPhotoError(true)}
-                />
-              ) : (
-                <div className="about-photo__placeholder">
-                  <span>Фото мастера</span>
-                  <span className="about-photo__placeholder-hint">
-                    /images/master.webp
-                  </span>
-                </div>
-              )}
+            {/* ЛЕВАЯ КОЛОНКА — фото мастера + блок подписки */}
+            <div className="about-left-col">
+              <div className="about-photo">
+                <div className="about-photo__glow" aria-hidden />
+                {!photoError ? (
+                  <img
+                    src="/images/master.webp"
+                    alt="Мастер ателье Jardin"
+                    className="about-photo__img"
+                    loading="lazy"
+                    decoding="async"
+                    onError={() => setPhotoError(true)}
+                  />
+                ) : (
+                  <div className="about-photo__placeholder">
+                    <span>Фото мастера</span>
+                    <span className="about-photo__placeholder-hint">
+                      /images/master.webp
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="about-subscribe">
+                <SocialSubscribeBanner />
+              </div>
             </div>
 
+            {/* ПРАВАЯ КОЛОНКА — заголовок, стандарты, текст */}
             <div className="about-content">
               <h3 className="about-content__heading">
                 {t.aboutPage.heading}
@@ -162,7 +174,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* ЦЕННОСТИ */}
+      {/* ============================================
+          ЦЕННОСТИ
+          ============================================ */}
       <section className="section about-values-section">
         <div className="container">
           <div className="about-values-list">
@@ -182,7 +196,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* МАСТЕРСКАЯ — фото мастерской, видео процесса, фото деталей */}
+      {/* ============================================
+          МАСТЕРСКАЯ — фото мастерской, видео, детали
+          ============================================ */}
       <section className="section about-showcase-section">
         <div className="container">
           <SectionHeader
@@ -230,7 +246,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* 2. Видео процесса — с кнопкой play */}
+            {/* 2. Видео процесса */}
             <div
               className="about-showcase__photo"
               onClick={handleOpenProcessVideo}
@@ -245,8 +261,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               aria-label={t.aboutPage.showcase2}
             >
               <div className="about-showcase__photo-glow" aria-hidden />
-
-              {/* Poster как фон карточки */}
               <video
                 className="about-showcase__photo-img"
                 src="/videos/atelier-process.mp4"
@@ -256,12 +270,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 preload="metadata"
                 aria-hidden
               />
-
-              {/* Кнопка play по центру */}
               <div className="about-showcase__play-btn" aria-hidden>
                 <Icon name="play" size={28} />
               </div>
-
               <div className="about-showcase__photo-caption">
                 {t.aboutPage.showcase2}
               </div>

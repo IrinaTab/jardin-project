@@ -8,3 +8,28 @@
   padding: 40px 0 20px 0;
   background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, rgba(10, 10, 10, 0) 70%);
 }
+
+/* ============================================
+   БЛОК ПОДПИСКИ — перед CTA
+   ============================================ */
+
+.gallery-page__subscribe {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+}
+
+/* На мобильных — блок на всю ширину, но не больше 320px */
+@media (max-width: 480px) {
+  .gallery-page__subscribe {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-xl);
+  }
+
+  .gallery-page__subscribe>.social-subscribe {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}

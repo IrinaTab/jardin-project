@@ -100,6 +100,7 @@ export interface ContactInfo {
   whatsapp: string;
   instagram: string;
   tiktok: string;
+  facebook: string;
 }
 export interface GalleryItem {
   id: string;

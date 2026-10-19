@@ -20,6 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     { href: contactInfo.whatsapp, label: 'WhatsApp', icon: 'whatsapp' as const },
     { href: contactInfo.instagram, label: 'Instagram', icon: 'instagram' as const },
     { href: contactInfo.tiktok, label: 'TikTok', icon: 'tiktok' as const },
+    { href: contactInfo.facebook, label: 'Facebook', icon: 'facebook' as const },
   ];
 
   const navLinks: { page: PageType; label: string }[] = [

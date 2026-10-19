@@ -1,0 +1,375 @@
+/* src/components/sections/SocialSubscribeBanner/SocialSubscribeBanner.css */
+
+.social-subscribe {
+    position: relative;
+    width: 230px;
+    min-height: 130px;
+    padding: 12px 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    border-radius: 14px;
+    overflow: hidden;
+    isolation: isolate;
+
+    /* Фон с усиленным радиальным свечением */
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 0%,
+            rgba(245, 215, 110, 0.22) 0%,
+            transparent 70%),
+        linear-gradient(180deg,
+            rgba(20, 16, 10, 1) 0%,
+            rgba(10, 10, 10, 1) 100%);
+
+    border: 1px solid rgba(212, 175, 55, 0.45);
+
+    box-shadow:
+        inset 0 1px 0 rgba(245, 215, 110, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.9),
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+
+    /* Быстрая пульсация золотого свечения (каждые 2.5с) */
+    animation: socialGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* Мерцающий градиентный слой поверх — "золотая пыль" */
+.social-subscribe::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(245, 215, 110, 0.35) 0%, transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(245, 215, 110, 0.28) 0%, transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(245, 215, 110, 0.3) 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    animation: socialGlowShimmer 3s ease-in-out infinite;
+}
+
+@keyframes socialGlowPulse {
+
+    0%,
+    100% {
+        border-color: rgba(212, 175, 55, 0.45);
+        box-shadow:
+            inset 0 1px 0 rgba(245, 215, 110, 0.2),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.9),
+            0 10px 30px rgba(0, 0, 0, 0.4),
+            0 2px 8px rgba(0, 0, 0, 0.3),
+            0 0 0 0 rgba(212, 175, 55, 0);
+    }
+
+    50% {
+        border-color: rgba(245, 215, 110, 0.95);
+        box-shadow:
+            inset 0 1px 0 rgba(245, 215, 110, 0.4),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.9),
+            0 10px 30px rgba(0, 0, 0, 0.4),
+            0 2px 8px rgba(0, 0, 0, 0.3),
+            0 0 24px rgba(245, 215, 110, 0.55),
+            0 0 48px rgba(212, 175, 55, 0.3),
+            0 0 80px rgba(212, 175, 55, 0.15);
+    }
+}
+
+@keyframes socialGlowShimmer {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    33% {
+        opacity: 0.85;
+        transform: scale(1.05);
+    }
+
+    66% {
+        opacity: 0.65;
+        transform: scale(0.98);
+    }
+}
+
+/* ============================================
+   БЕЙДЖ "МЫ В СОЦСЕТЯХ"
+   ============================================ */
+
+.social-subscribe__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-accent);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    padding: 3px 9px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(245, 215, 110, 0.5);
+    border-radius: 9999px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+
+    /* Лёгкая пульсация бейджа */
+    animation: badgeGlow 2s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 rgba(245, 215, 110, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 12px rgba(245, 215, 110, 0.5);
+    }
+}
+
+/* ============================================
+   ЗАГОЛОВОК И СЛОГАН
+   ============================================ */
+
+.social-subscribe__title {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 2px 0;
+    text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.9),
+        0 0 16px rgba(245, 215, 110, 0.4);
+    position: relative;
+    z-index: 1;
+}
+
+.social-subscribe__subtitle {
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.35;
+    margin: 0 0 6px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================
+   ИКОНКИ СОЦСЕТЕЙ
+   ============================================ */
+
+.social-subscribe__list {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.social-subscribe__btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--gold-light);
+    text-decoration: none;
+
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    /* Мерцание иконок */
+    animation: iconTwinkle 4s ease-in-out infinite;
+}
+
+.social-subscribe__btn:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.social-subscribe__btn:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.social-subscribe__btn:nth-child(3) {
+    animation-delay: 0.8s;
+}
+
+.social-subscribe__btn:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.social-subscribe__btn:nth-child(5) {
+    animation-delay: 1.6s;
+}
+
+@keyframes iconTwinkle {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 rgba(245, 215, 110, 0);
+    }
+
+    50% {
+        box-shadow:
+            0 0 10px rgba(245, 215, 110, 0.45),
+            0 0 20px rgba(212, 175, 55, 0.2);
+    }
+}
+
+.social-subscribe__btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%,
+            rgba(245, 215, 110, 0.4) 0%,
+            transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.social-subscribe__btn:hover {
+    transform: translateY(-2px) scale(1.12);
+    border-color: var(--gold-light);
+    color: #ffffff;
+    background: rgba(212, 175, 55, 0.22);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(245, 215, 110, 0.7);
+    animation: none;
+}
+
+.social-subscribe__btn:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   МЕРЦАНИЯ (sparkles)
+   ============================================ */
+
+.social-subscribe__sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow:
+        0 0 6px #FFE999,
+        0 0 14px #D4AF37,
+        0 0 22px rgba(245, 215, 110, 0.8);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.social-subscribe__sparkle--1 {
+    top: 18%;
+    left: 10%;
+    animation: sparkleTwinkle 2s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.social-subscribe__sparkle--2 {
+    top: 60%;
+    right: 8%;
+    animation: sparkleTwinkle 2.6s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+.social-subscribe__sparkle--3 {
+    bottom: 22%;
+    left: 46%;
+    animation: sparkleTwinkle 2.2s ease-in-out infinite;
+    animation-delay: 1.2s;
+}
+
+.social-subscribe__sparkle--4 {
+    top: 10%;
+    right: 30%;
+    animation: sparkleTwinkle 2.8s ease-in-out infinite;
+    animation-delay: 1.8s;
+}
+
+@keyframes sparkleTwinkle {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1.6);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+    .social-subscribe {
+        width: 100%;
+        max-width: 320px;
+        min-height: 130px;
+    }
+
+    .social-subscribe__btn {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .social-subscribe,
+    .social-subscribe::before,
+    .social-subscribe__badge,
+    .social-subscribe__btn,
+    .social-subscribe__sparkle {
+        animation: none;
+    }
+
+    .social-subscribe__btn {
+        transition: none;
+    }
+}

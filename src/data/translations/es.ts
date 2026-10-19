@@ -236,4 +236,11 @@ export const es = {
   galleryPage: {
     label: 'Obras de autor exclusivas',
   },
+  socialSubscribe: {
+    badge: 'Estamos en redes',
+    title: 'Sigue a Jardin',
+    subtitle: 'Nuevas obras, detrás de escena del atelier y consejos de cuidado — en nuestras redes',
+    cta: 'Seguir',
+    followUs: 'Únete',
+  },
 };

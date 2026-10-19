@@ -29,8 +29,24 @@
   align-items: start;
 }
 
+/* ---------- Левая колонка: фото + блок подписки ---------- */
+
+.about-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+  width: 100%;
+}
+
+.about-subscribe {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 /* ============================================
-   ЛЕВАЯ КОЛОНКА — фото мастера с туманным бордером
+   ФОТО МАСТЕРА — с туманным бордером
    ============================================ */
 
 .about-photo {
@@ -41,8 +57,6 @@
   border-radius: clamp(20px, 3vw, 32px);
   isolation: isolate;
 }
-
-/* ---------- Туманный ореол вокруг фото ---------- */
 
 .about-photo__glow {
   position: absolute;
@@ -78,8 +92,6 @@
   }
 }
 
-/* ---------- Картинка ---------- */
-
 .about-photo__img {
   display: block;
   width: 100%;
@@ -110,8 +122,6 @@
   opacity: 1;
   filter: blur(40px);
 }
-
-/* ---------- Плейсхолдер, если фото ещё нет ---------- */
 
 .about-photo__placeholder {
   position: absolute;
@@ -187,6 +197,8 @@
   font-size: var(--text-base);
   line-height: 1.7;
   margin: 0;
+  /* justify по умолчанию (для десктопа) — можно поменять на left, если хочется */
+  text-align: justify;
 }
 
 /* ============================================
@@ -322,9 +334,7 @@
   gap: var(--space-md);
 }
 
-/* ============================================
-   Плейсхолдер — пунктирная плашка
-   ============================================ */
+/* ---------- Плейсхолдер — пунктирная плашка ---------- */
 
 .about-showcase__placeholder {
   aspect-ratio: 4 / 3;
@@ -363,7 +373,6 @@
 
 /* ============================================
    ФОТО — карточка с туманным бордером
-   Все карточки одинаковой пропорции 4:3
    ============================================ */
 
 .about-showcase__photo {
@@ -374,8 +383,6 @@
   isolation: isolate;
   cursor: pointer;
 }
-
-/* ---------- Туманный ореол ---------- */
 
 .about-showcase__photo-glow {
   position: absolute;
@@ -396,8 +403,6 @@
   transition: opacity var(--transition-normal), filter var(--transition-normal);
   will-change: opacity, filter;
 }
-
-/* ---------- Изображение ---------- */
 
 .about-showcase__photo-img {
   position: relative;
@@ -431,8 +436,6 @@
   opacity: 1;
   filter: blur(28px);
 }
-
-/* ---------- Подпись внизу ---------- */
 
 .about-showcase__photo-caption {
   position: absolute;
@@ -505,106 +508,7 @@
   outline-offset: 4px;
 }
 
-/* ============================================
-   RESPONSIVE — планшет
-   ============================================ */
-
-@media (max-width: 900px) {
-  .about-main-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-  }
-
-  .about-photo {
-    max-width: 420px;
-    margin: 0 auto;
-  }
-
-  .about-values-list,
-  .about-showcase__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .about-main-section {
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-xl);
-  }
-
-  .about-photo__glow {
-    inset: -20px;
-    filter: blur(24px);
-  }
-}
-
-/* ============================================
-   RESPONSIVE — мобильные ≤ 600px
-   ============================================ */
-
-@media (max-width: 600px) {
-  .about-main-section {
-    padding-top: var(--space-lg);
-    padding-bottom: var(--space-lg);
-  }
-
-  .about-hero {
-    margin-bottom: var(--space-lg);
-  }
-
-  .about-main-grid {
-    gap: var(--space-lg);
-  }
-
-  .about-content__heading {
-    font-size: var(--text-xl);
-  }
-
-  .about-photo {
-    max-width: 320px;
-  }
-
-  .about-standards-card {
-    padding: var(--space-md);
-  }
-
-  .about-values-section,
-  .about-showcase-section {
-    padding-top: var(--space-lg);
-    padding-bottom: var(--space-xl);
-  }
-}
-
-/* ============================================
-   RESPONSIVE — очень маленькие ≤ 375px
-   ============================================ */
-
-@media (max-width: 375px) {
-  .about-main-section {
-    padding-top: var(--space-md);
-    padding-bottom: var(--space-md);
-  }
-
-  .about-content__heading {
-    font-size: 1.35rem;
-  }
-
-  .about-photo {
-    max-width: 280px;
-  }
-
-  .about-photo__glow {
-    inset: -14px;
-    filter: blur(18px);
-    opacity: 0.7;
-  }
-
-  .about-value-item {
-    padding: var(--space-md) var(--space-sm);
-  }
-}
-
-/* ============================================
-   PLAY BUTTON — для карточки видео
-   ============================================ */
+/* ---------- PLAY BUTTON — для видео ---------- */
 
 .about-showcase__play-btn {
   position: absolute;
@@ -625,7 +529,6 @@
   align-items: center;
   justify-content: center;
   padding-left: 4px;
-  /* визуальная компенсация треугольника play */
 
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.45),
@@ -633,7 +536,6 @@
 
   transition: all var(--transition-normal);
   pointer-events: none;
-  /* клик идёт на всю карточку */
 }
 
 .about-showcase__photo:hover .about-showcase__play-btn {
@@ -644,7 +546,103 @@
     0 0 36px rgba(245, 215, 110, 0.65);
 }
 
+/* ============================================
+   RESPONSIVE — планшет (≤900px)
+   ============================================ */
+
+@media (max-width: 900px) {
+  .about-main-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .about-left-col {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* Центрируем весь текстовый контент правой колонки */
+  .about-content {
+    text-align: center;
+    align-items: center;
+  }
+
+  .about-content__heading {
+    text-align: center;
+  }
+
+  .about-standards-card {
+    text-align: left;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .about-standards-card__title {
+    text-align: center;
+  }
+
+  .about-content__text {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* На узких экранах justify выглядит плохо (большие пробелы) — переключаем на left */
+  .about-content__text p {
+    text-align: left;
+  }
+
+  .about-values-list,
+  .about-showcase__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-main-section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  .about-photo__glow {
+    inset: -20px;
+    filter: blur(24px);
+  }
+}
+
+/* ============================================
+   RESPONSIVE — мобильные (≤600px)
+   ============================================ */
+
 @media (max-width: 600px) {
+  .about-main-section {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
+  .about-hero {
+    margin-bottom: var(--space-lg);
+  }
+
+  .about-main-grid {
+    gap: var(--space-lg);
+  }
+
+  .about-content__heading {
+    font-size: var(--text-xl);
+  }
+
+  .about-left-col {
+    max-width: 320px;
+  }
+
+  .about-standards-card {
+    padding: var(--space-md);
+  }
+
+  .about-values-section,
+  .about-showcase-section {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-xl);
+  }
+
   .about-showcase__play-btn {
     width: 52px;
     height: 52px;
@@ -652,7 +650,36 @@
 }
 
 /* ============================================
-   ACCESSIBILITY
+   RESPONSIVE — очень маленькие (≤375px)
+   ============================================ */
+
+@media (max-width: 375px) {
+  .about-main-section {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+
+  .about-content__heading {
+    font-size: 1.35rem;
+  }
+
+  .about-left-col {
+    max-width: 280px;
+  }
+
+  .about-photo__glow {
+    inset: -14px;
+    filter: blur(18px);
+    opacity: 0.7;
+  }
+
+  .about-value-item {
+    padding: var(--space-md) var(--space-sm);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY — отключение анимаций
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -662,12 +689,16 @@
 
   .about-photo__img,
   .about-showcase__photo-img,
+  .about-showcase__zoom-btn,
+  .about-showcase__play-btn,
   .about-value-item {
     transition: none;
   }
 
   .about-photo:hover .about-photo__img,
-  .about-showcase__photo:hover .about-showcase__photo-img {
+  .about-showcase__photo:hover .about-showcase__photo-img,
+  .about-showcase__photo:hover .about-showcase__zoom-btn,
+  .about-showcase__photo:hover .about-showcase__play-btn {
     transform: none;
   }
 }

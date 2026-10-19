@@ -236,4 +236,11 @@ export const en = {
   galleryPage: {
     label: 'Exclusive author works',
   },
+  socialSubscribe: {
+    badge: 'We are on social',
+    title: 'Follow Jardin',
+    subtitle: 'New works, atelier behind-the-scenes and care tips — on our social media',
+    cta: 'Follow',
+    followUs: 'Join us',
+  },
 };

@@ -20,4 +20,5 @@ export const contactInfo: ContactInfo = {
   whatsapp: 'https://wa.me/34629008832',
   instagram: 'https://www.instagram.com/jardinhair.systems?cplk=NGl5NGpkcnc5YTZ1',
   tiktok: 'https://www.tiktok.com/@jardin7773',
+  facebook: 'https://www.facebook.com/share/1Dzu5EpL1Y/?mibextid=wwXIfr',
 };

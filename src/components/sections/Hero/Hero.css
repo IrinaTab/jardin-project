@@ -190,6 +190,37 @@
 }
 
 /* ============================================
+   HERO SUBSCRIBE — блок подписки на соцсети
+   ============================================ */
+
+.hero__subscribe {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xl);
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* На планшете (≤ 1024px) и мобильном — блок по центру */
+@media (max-width: 1024px) {
+  .hero__subscribe {
+    justify-content: center;
+  }
+}
+
+/* На мобильном — блок на всю ширину Hero-колонки */
+@media (max-width: 480px) {
+  .hero__subscribe {
+    width: 100%;
+  }
+
+  .hero__subscribe>.social-subscribe {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================
    HERO STATS
    ============================================ */
 

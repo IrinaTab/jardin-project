@@ -183,6 +183,15 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                   <Icon name="tiktok" size={16} />
                   <span>TikTok</span>
                 </a>
+                <a
+                  href={contactInfo.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contacts-messenger-btn"
+                >
+                  <Icon name="facebook" size={16} />
+                  <span>Facebook</span>
+                </a>
               </div>
             </div>
           </div>

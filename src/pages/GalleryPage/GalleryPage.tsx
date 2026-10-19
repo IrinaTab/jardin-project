@@ -6,6 +6,7 @@ import { PageType } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useLanguage } from '../../context/LanguageContext';
 import { GallerySection } from '../../components/sections/Gallery';
+import { SocialSubscribeBanner } from '../../components/sections/SocialSubscribeBanner';
 import { CTABanner } from '../../components/sections/CTA';
 
 export interface GalleryPageProps {
@@ -21,12 +22,17 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate }) => {
       <div className="gallery-page__intro">
         <div className="container">
           <p className="gallery-page__label">
-            Эксклюзивные авторские работы
+            {t.galleryPage.label}
           </p>
         </div>
       </div>
 
       <GallerySection isPreview={false} />
+
+      {/* Блок подписки на соцсети перед CTA */}
+      <div className="gallery-page__subscribe">
+        <SocialSubscribeBanner />
+      </div>
 
       <CTABanner
         onOrderClick={() => onNavigate('calculator')}

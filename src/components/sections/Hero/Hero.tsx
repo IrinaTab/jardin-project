@@ -5,6 +5,7 @@ import './Hero.css';
 import { useLanguage } from '../../../context/LanguageContext';
 import { Button } from '../../ui/Button';
 import { Icon } from '../../ui/Icon';
+import { SocialSubscribeBanner } from '../SocialSubscribeBanner';
 
 export interface HeroProps {
   onOrderClick: () => void;
@@ -23,7 +24,6 @@ export const Hero: React.FC<HeroProps> = ({ onOrderClick, onShopClick }) => {
   return (
     <section className="hero-section">
       <div className="container">
-        {/* Плашка — над сеткой, по центру всей ширины */}
         <div className="hero__badge-wrap">
           <div className="hero__badge">
             <Icon name="crown" size={14} className="hero__badge-icon" />
@@ -31,9 +31,7 @@ export const Hero: React.FC<HeroProps> = ({ onOrderClick, onShopClick }) => {
           </div>
         </div>
 
-        {/* Сетка из двух колонок */}
         <div className="hero__layout">
-          {/* ЛЕВАЯ КОЛОНКА — заголовок, подзаголовок, кнопки, stats */}
           <div className="hero__content">
             <h1 className="hero__title">
               <span className="hero__title-accent">{t.hero.title}</span>
@@ -62,6 +60,11 @@ export const Hero: React.FC<HeroProps> = ({ onOrderClick, onShopClick }) => {
               </Button>
             </div>
 
+            {/* Блок подписки на соцсети — прямо под кнопками */}
+            <div className="hero__subscribe">
+              <SocialSubscribeBanner />
+            </div>
+
             <div className="hero__stats-row">
               {stats.map((stat, i) => (
                 <div key={i} className="hero__stat-card">
@@ -72,7 +75,6 @@ export const Hero: React.FC<HeroProps> = ({ onOrderClick, onShopClick }) => {
             </div>
           </div>
 
-          {/* ПРАВАЯ КОЛОНКА — баннер */}
           <div className="hero__banner">
             <div className="hero__banner-glow" aria-hidden />
             <img
