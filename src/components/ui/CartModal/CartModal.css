@@ -130,6 +130,15 @@
   font-family: var(--font-body);
 }
 
+.cart-item-premium {
+  color: var(--gold-dark);
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  background: rgba(212, 175, 55, 0.15);
+  border-radius: 4px;
+}
+
 /* ---------- Controls ---------- */
 
 .cart-item-controls {

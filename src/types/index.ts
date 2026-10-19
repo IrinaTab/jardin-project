@@ -32,12 +32,20 @@ export interface HairColor {
   toneCategory: 'blonde' | 'brown' | 'dark' | 'copper' | 'grey';
 }
 
+export type ProductShapeId =
+  | 'wig-full'
+  | 'wig-bangs-no-imit'
+  | 'wig-bangs-silk'
+  | 'wig-topper-small'
+  | 'wig-topper-medium'
+  | 'wig-topper-deep'
+  | 'wig-bun';
+
 export interface ProductShape {
-  id: 'wig' | 'topper' | 'bangs' | 'strands' | 'wefts';
+  id: ProductShapeId;
   name: LocalizedText;
-  priceMultiplier: number;
-  basePrice: number;
   description: LocalizedText;
+  icon?: string;
 }
 
 export interface LengthOption {
@@ -54,6 +62,9 @@ export interface CustomOrderCartItem {
   shapeId: 'wig' | 'topper' | 'bangs' | 'strands' | 'wefts';
   shapeName: LocalizedText;
   lengthCm: number;
+  extraWeightGrams: number;       // добавка к стандартному весу
+  totalWeightGrams: number;       // общий вес (стандарт + добавка)
+  isPremiumHair: boolean;
   colorId: string;
   colorName: LocalizedText;
   colorHex: string;

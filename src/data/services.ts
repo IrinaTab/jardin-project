@@ -1,67 +1,108 @@
-import { ProductShape, LengthOption } from '../types';
+// src/data/services.ts
 
+import { ProductShape } from '../types';
+
+/**
+ * Типы изделий в калькуляторе.
+ * Цены и веса — в src/data/pricing.ts (единый конфиг).
+ */
 export const productShapes: ProductShape[] = [
   {
-    id: 'wig',
-    name: { ru: 'Полный парик на шелковой основе', en: 'Full Lace & Silk Base Wig', es: 'Peluca completa con base de seda' },
-    basePrice: 1200,
-    priceMultiplier: 1.0,
-    description: {
-      ru: 'Индивидуальная шапочка по меркам вашей головы с шелковой вставкой 10×10 см для безупречного пробора.',
-      en: 'Custom cap crafted to your head measurements with a 10×10cm silk insert for realistic parting.',
-      es: 'Gorro personalizado a sus medidas con inserto de seda de 10×10 cm para una raya impecable.',
+    id: 'wig-bangs-no-imit',
+    name: {
+      ru: 'Чёлка без имитации кожи головы',
+      en: 'Bangs without Scalp Imitation',
+      es: 'Flequillo sin Imitación de Cuero Cabelludo',
     },
+    description: {
+      ru: 'Лёгкая чёлка на клипсах без имитации пробора. Простая посадка, естественная густота.',
+      en: 'Light clip-in bangs without parting imitation. Simple fit, natural density.',
+      es: 'Flequillo ligero con clips sin imitación de raya. Ajuste simple, densidad natural.',
+    },
+    icon: 'feather',
   },
   {
-    id: 'topper',
-    name: { ru: 'Накладка / Топпер на макушку', en: 'Crown Volume Topper', es: 'Prótesis capilar / Topper coronilla' },
-    basePrice: 650,
-    priceMultiplier: 1.0,
-    description: {
-      ru: 'Легкая маскировочная основа с тамбуровкой для придания прикорневого объема и перекрытия пробора.',
-      en: 'Featherlight piece designed to blend with your bio-hair and add volume at the crown.',
-      es: 'Pieza ultraligera diseñada para fundirse con su cabello y aportar volumen en la coronilla.',
+    id: 'wig-bangs-silk',
+    name: {
+      ru: 'Чёлка с имитацией (Silk Top)',
+      en: 'Bangs with Silk Top Imitation',
+      es: 'Flequillo con Imitación Silk Top',
     },
+    description: {
+      ru: 'Чёлка с имитацией кожи головы — невидимый пробор и максимальная естественность.',
+      en: 'Bangs with scalp imitation — invisible parting and maximum naturalness.',
+      es: 'Flequillo con imitación de cuero cabelludo — raya invisible y máxima naturalidad.',
+    },
+    icon: 'sparkles',
   },
   {
-    id: 'bangs',
-    name: { ru: 'Челка на микроклипсах', en: 'Clip-In Front Bangs', es: 'Flequillo con micro-clips' },
-    basePrice: 250,
-    priceMultiplier: 1.0,
-    description: {
-      ru: 'Градуированная или прямая челка с удлиненными боковыми прядями без необходимости стричь свои волосы.',
-      en: 'Graduated or straight bangs with elongated face-framing strands without cutting bio-hair.',
-      es: 'Flequillo desfilado o recto con mechones laterales sin necesidad de cortar el propio cabello.',
+    id: 'wig-topper-small',
+    name: {
+      ru: 'Накладка маленькая',
+      en: 'Small Hair Topper',
+      es: 'Topper Pequeño',
     },
+    description: {
+      ru: 'Минимальная зона покрытия — для небольших залысин и редких участков.',
+      en: 'Minimal coverage area — for small thinning spots.',
+      es: 'Área de cobertura mínima — para pequeñas zonas ralas.',
+    },
+    icon: 'crown',
   },
   {
-    id: 'strands',
-    name: { ru: 'Пряди / Трессы на заколках', en: 'Clip-in & Hand-Tied Strands', es: 'Mechas y tiras de quita y pon' },
-    basePrice: 300,
-    priceMultiplier: 1.0,
-    description: {
-      ru: 'Комплект акцентных прядей для загущения висков или создания ярких цветовых акцентов.',
-      en: 'Set of custom density strands to accentuate temples or create chemical-free highlights.',
-      es: 'Juego de mechas para aportar densidad en sienes o crear reflejos sin químicos.',
+    id: 'wig-topper-medium',
+    name: {
+      ru: 'Накладка среднего размера',
+      en: 'Medium Hair Topper',
+      es: 'Topper Mediano',
     },
+    description: {
+      ru: 'Средняя зона покрытия — пробор и макушка. Оптимальный баланс площади и комфорта.',
+      en: 'Medium coverage area — parting and crown. Optimal balance of coverage and comfort.',
+      es: 'Área de cobertura media — raya y coronilla. Equilibrio óptimo entre cobertura y confort.',
+    },
+    icon: 'crown',
   },
   {
-    id: 'wefts',
-    name: { ru: 'Голливудские трессы ручной работы', en: 'Hand-Crafted Hollywood Wefts', es: 'Cortinas tejidas a mano Hollywood' },
-    basePrice: 500,
-    priceMultiplier: 1.0,
-    description: {
-      ru: 'Ручное плетение тресса с минимальной толщиной шва для наращивания на микрокосичку.',
-      en: 'Finely knotted micro-seam wefts for the gentle braid attachment method.',
-      es: 'Costura milimétrica tejida a mano para el método de extensión sobre microtrenza.',
+    id: 'wig-topper-deep',
+    name: {
+      ru: 'Накладка глубокая',
+      en: 'Deep Hair Topper',
+      es: 'Topper Profundo',
     },
+    description: {
+      ru: 'Расширенная зона покрытия — от пробора до затылка. Для существенных зон поредения.',
+      en: 'Extended coverage area — from parting to crown back. For significant thinning zones.',
+      es: 'Área de cobertura ampliada — desde la raya hasta la coronilla trasera.',
+    },
+    icon: 'crown',
   },
-];
-
-export const lengthOptions: LengthOption[] = [
-  { lengthCm: 30, priceMultiplier: 0.7 },
-  { lengthCm: 40, priceMultiplier: 0.85 },
-  { lengthCm: 50, priceMultiplier: 1.0 },
-  { lengthCm: 60, priceMultiplier: 1.25 },
-  { lengthCm: 70, priceMultiplier: 1.6 },
+  {
+    id: 'wig-full',
+    name: {
+      ru: 'Полная система замещения волос',
+      en: 'Full Hair Replacement System',
+      es: 'Sistema Completo de Sustitución',
+    },
+    description: {
+      ru: 'Полный парик или система на швейцарской сетке. Максимальная тамбуровка, Silk Top, анатомическая посадка.',
+      en: 'Full wig or Swiss lace system. Maximum hand-ventilation, Silk Top, anatomical fit.',
+      es: 'Peluca completa o sistema en encaje suizo. Ventilación máxima, Silk Top, ajuste anatómico.',
+    },
+    icon: 'diamond',
+  },
+  {
+    id: 'wig-bun',
+    name: {
+      ru: 'Шиньон',
+      en: 'Hair Bun / Chignon',
+      es: 'Moño / Chignon',
+    },
+    description: {
+      ru: 'Шиньон на трессах. Волосы подбираются по запросу: вес, длина, оттенок.',
+      en: 'Hair bun on wefts. Hair is customized: weight, length, shade.',
+      es: 'Moño sobre cortinas. Cabello personalizado: peso, longitud, tono.',
+    },
+    icon: 'crown',
+  },
 ];

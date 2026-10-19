@@ -18,7 +18,11 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'jardin_custom_order_cart_v2';
+/**
+ * Обновлено на v3 — структура позиции расширена:
+ * extraWeightGrams, totalWeightGrams, isPremiumHair.
+ */
+const CART_STORAGE_KEY = 'jardin_custom_order_cart_v3';
 
 /**
  * Валидация позиции корзины, загруженной из localStorage.
@@ -27,7 +31,6 @@ const CART_STORAGE_KEY = 'jardin_custom_order_cart_v2';
  */
 function isValidCartItem(item: unknown): item is CustomOrderCartItem {
   if (!item || typeof item !== 'object') return false;
-
   const it = item as Record<string, unknown>;
 
   return (
@@ -39,6 +42,9 @@ function isValidCartItem(item: unknown): item is CustomOrderCartItem {
     typeof (it.shapeName as Record<string, unknown>).en === 'string' &&
     typeof (it.shapeName as Record<string, unknown>).es === 'string' &&
     typeof it.lengthCm === 'number' &&
+    typeof it.extraWeightGrams === 'number' &&
+    typeof it.totalWeightGrams === 'number' &&
+    typeof it.isPremiumHair === 'boolean' &&
     typeof it.colorId === 'string' &&
     it.colorName !== null &&
     typeof it.colorName === 'object' &&

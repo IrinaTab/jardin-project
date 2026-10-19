@@ -208,6 +208,16 @@ export const CartModal: React.FC<CartModalProps> = ({
                         <span className="cart-color-dot" style={{ backgroundColor: item.colorHex }} />
                         {item.colorName[language]}
                       </span>
+                      {item.totalWeightGrams > 0 && (
+                        <span>
+                          {t.customOrder.densityTotal}: {item.totalWeightGrams} {language === 'ru' ? 'г' : 'g'}
+                        </span>
+                      )}
+                      {item.isPremiumHair && (
+                        <span className="cart-item-premium">
+                          ⭐ {language === 'ru' ? 'Премиум' : language === 'es' ? 'Premium' : 'Premium'}
+                        </span>
+                      )}
                     </div>
                     <div className="cart-item-price">
                       {formatPrice(item.unitPrice * item.quantity, '€', language)}
