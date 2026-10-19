@@ -90,8 +90,6 @@ export const en = {
     currency: '€',
     submitButton: 'Submit Bespoke Order Request',
     sending: 'Sending inquiry...',
-    successTitle: 'Inquiry Submitted Successfully!',
-    successDesc: 'The master will contact you shortly to confirm the details and provide a consultation.',
     contactMethod: 'Preferred contact channel:',
     methods: {
       telegram: 'Telegram',

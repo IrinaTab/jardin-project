@@ -90,8 +90,6 @@ export const ru = {
     currency: '€',
     submitButton: 'Отправить заявку на пошив',
     sending: 'Отправка заявки...',
-    successTitle: 'Заявка успешно отправлена!',
-    successDesc: 'Мастер свяжется с вами в ближайшее время для подтверждения деталей и консультации.',
     contactMethod: 'Удобный способ связи:',
     methods: {
       telegram: 'Telegram',

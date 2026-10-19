@@ -90,8 +90,6 @@ export const es = {
     currency: '€',
     submitButton: 'Enviar solicitud de confección',
     sending: 'Enviando solicitud...',
-    successTitle: '¡Solicitud enviada con éxito!',
-    successDesc: 'El asistente se pondrá en contacto con usted en breve para confirmar los detalles y ofrecer asesoramiento.',
     contactMethod: 'Medio de contacto preferido:',
     methods: {
       telegram: 'Telegram',
