@@ -516,3 +516,87 @@
     0 0 10px var(--gold-60),
     0 0 20px var(--gold-30);
 }
+
+/* ============================================
+   DISCLAIMER — предупреждение об ориентировочной цене
+   ============================================ */
+
+/* Короткая фраза под ценой */
+.calc-price-disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: rgba(245, 215, 110, 0.85);
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-full);
+  line-height: 1.3;
+  text-align: center;
+  font-weight: 500;
+}
+
+.calc-price-disclaimer svg,
+.calc-price-disclaimer .icon-wrapper {
+  flex-shrink: 0;
+  color: var(--gold-light);
+}
+
+/* Полный блок с текстом под кнопкой */
+.calc-disclaimer-box {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.calc-disclaimer-box svg,
+.calc-disclaimer-box .icon-wrapper {
+  flex-shrink: 0;
+  color: var(--gold-light);
+  margin-top: 2px;
+}
+
+.calc-disclaimer-box strong {
+  display: block;
+  color: var(--gold-light);
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.calc-disclaimer-box p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .calc-price-disclaimer {
+    font-size: 0.68rem;
+    padding: 5px 10px;
+  }
+
+  .calc-disclaimer-box {
+    padding: 10px 12px;
+    font-size: 0.74rem;
+  }
+
+  .calc-disclaimer-box strong {
+    font-size: 0.74rem;
+  }
+
+  .calc-disclaimer-box p {
+    font-size: 0.74rem;
+  }
+}

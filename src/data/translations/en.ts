@@ -107,6 +107,12 @@ export const en = {
     addedToCart: '✓ Added',
     addToCartNote: 'Item will be added to your request. You can configure several pieces and submit them in one request.',
     quantityLabel: 'Quantity:',
+    disclaimerTitle: 'Estimated Price',
+    disclaimerText: 'This is a preliminary calculation based on basic parameters. The final price is determined by the master during a consultation, considering individual preferences, hair density, attachment method, and other details.',
+    disclaimerShort: 'Final price — after consultation with the master',
+    successTitle: 'Request Accepted!',
+    successDesc: 'The master will contact you shortly to clarify details and confirm the final price.',
+    successDisclaimer: 'The final price may differ from the preliminary estimate — the master will consider all your preferences.',
   },
   gallery: {
     badge: 'Master Portfolio',

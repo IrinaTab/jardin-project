@@ -588,3 +588,37 @@
     height: 40px;
   }
 }
+
+/* ============================================
+   SUCCESS — плашка про финальную цену
+   ============================================ */
+
+.cart-order-success__disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-dark-soft);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: left;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.cart-order-success__disclaimer svg,
+.cart-order-success__disclaimer .icon-wrapper {
+  flex-shrink: 0;
+  color: var(--gold-dark);
+  margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .cart-order-success__disclaimer {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+  }
+}

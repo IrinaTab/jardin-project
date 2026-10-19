@@ -156,6 +156,13 @@ export const CartModal: React.FC<CartModalProps> = ({
             <p className="cart-order-success__text">
               {t.customOrder.successDesc}
             </p>
+
+            {/* Дополнительное уточнение про финальную цену */}
+            <div className="cart-order-success__disclaimer">
+              <Icon name="shield" size={14} />
+              <span>{t.customOrder.successDisclaimer}</span>
+            </div>
+
             <Button
               variant="primary"
               onClick={handleClose}

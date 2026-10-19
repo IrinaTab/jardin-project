@@ -107,6 +107,12 @@ export const es = {
     addedToCart: '✓ Añadido',
     addToCartNote: 'La pieza se añadirá a su solicitud. Puede configurar varias piezas y enviarlas en una sola solicitud.',
     quantityLabel: 'Cantidad:',
+    disclaimerTitle: 'Precio Estimado',
+    disclaimerText: 'Este es un cálculo preliminar basado en parámetros básicos. El precio final lo determina la maestra en consulta, considerando preferencias individuales, densidad del cabello, método de fijación y otros detalles.',
+    disclaimerShort: 'Precio final — tras la consulta con la maestra',
+    successTitle: '¡Solicitud Recibida!',
+    successDesc: 'La maestra se pondrá en contacto con usted en breve para aclarar los detalles y confirmar el precio final.',
+    successDisclaimer: 'El precio final puede diferir del cálculo preliminar — la maestra tendrá en cuenta todas sus preferencias.',
   },
   gallery: {
     badge: 'Portafolio del Maestro',

@@ -168,6 +168,12 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
                 {formatPrice(calculatedPrice, '€', language)}
               </div>
               <div className="calc-formula-note">{t.customOrder.formulaNote}</div>
+
+              {/* Уточнение: ориентировочная стоимость */}
+              <div className="calc-price-disclaimer">
+                <Icon name="shield" size={12} />
+                <span>{t.customOrder.disclaimerShort}</span>
+              </div>
             </div>
 
             <div className="calc-add-to-cart">
@@ -201,6 +207,14 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
               >
                 {justAdded ? t.customOrder.addedToCart : t.customOrder.addToCart}
               </Button>
+              {/* Плашка-предупреждение под кнопкой */}
+              <div className="calc-disclaimer-box">
+                <Icon name="shield" size={14} />
+                <div>
+                  <strong>{t.customOrder.disclaimerTitle}</strong>
+                  <p>{t.customOrder.disclaimerText}</p>
+                </div>
+              </div>
 
               <p className="calc-add-note">{t.customOrder.addToCartNote}</p>
             </div>
