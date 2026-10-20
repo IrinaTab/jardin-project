@@ -240,7 +240,7 @@ export const en = {
     value3Text: 'Complimentary service maintenance, length adjustment, and professional care support.',
     showcaseBadge: 'Atelier Atmosphere',
     showcaseTitle: 'Jardin Workshop',
-    showcaseSubtitle: "Soon you will find photos of the process, videos of the master's work, and other atelier details",
+    showcaseSubtitle: "Master at work, other atelier details and so on",
     showcase1: 'Workshop Photo',
     showcase2: 'Process Video',
     showcase3: 'Work Details',

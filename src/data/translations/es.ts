@@ -240,7 +240,7 @@ export const es = {
     value3Text: 'Mantenimiento de servicio gratuito, ajuste de longitud y apoyo profesional en el cuidado.',
     showcaseBadge: 'Atmósfera del atelier',
     showcaseTitle: 'Taller Jardin',
-    showcaseSubtitle: 'Pronto encontrarán fotos del proceso, videos del trabajo de la maestra y otros detalles del atelier',
+    showcaseSubtitle: 'La maestra en el trabajo y otros detalles',
     showcase1: 'Foto del taller',
     showcase2: 'Vídeo del proceso',
     showcase3: 'Detalles del trabajo',
