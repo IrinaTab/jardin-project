@@ -240,3 +240,17 @@
     padding: var(--space-md);
   }
 }
+
+/* ============================================
+   МОБИЛЬНЫЕ ИНПУТЫ — предотвращаем автоувеличение
+   iOS/Android увеличивают страницу, если font-size < 16px
+   ============================================ */
+
+@media (max-width: 768px) {
+
+  .app-modal-content input,
+  .app-modal-content textarea,
+  .app-modal-content select {
+    font-size: 16px !important;
+  }
+}

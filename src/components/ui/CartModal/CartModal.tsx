@@ -58,19 +58,10 @@ export const CartModal: React.FC<CartModalProps> = ({
     setView('cart');
   };
 
-  /**
-   * Единый переход к калькулятору.
-   * Закрывает модалку и навигирует на страницу калькулятора.
-   */
   const handleGoToCalculator = () => {
     closeCart();
     if (onNavigateToCalculator) {
       onNavigateToCalculator();
-    } else {
-      // Fallback: пробуем проскроллить (если CustomOrder есть на текущей странице)
-      setTimeout(() => {
-        document.getElementById('custom-order')?.scrollIntoView({ behavior: 'smooth' });
-      }, 250);
     }
   };
 
@@ -81,12 +72,16 @@ export const CartModal: React.FC<CartModalProps> = ({
       setError(t.errors.requiredName);
       return;
     }
-    if (!isValidPhone(clientPhone)) {
-      setError(t.errors.invalidPhone);
+    if (!clientEmail.trim()) {
+      setError(t.errors.requiredEmail);
       return;
     }
-    if (clientEmail.trim() && !/^\S+@\S+\.\S+$/.test(clientEmail.trim())) {
+    if (!/^\S+@\S+\.\S+$/.test(clientEmail.trim())) {
       setError(t.errors.invalidEmail);
+      return;
+    }
+    if (!isValidPhone(clientPhone)) {
+      setError(t.errors.invalidPhone);
       return;
     }
     if (!agreed) {
@@ -157,7 +152,6 @@ export const CartModal: React.FC<CartModalProps> = ({
               {t.customOrder.successDesc}
             </p>
 
-            {/* Дополнительное уточнение про финальную цену */}
             <div className="cart-order-success__disclaimer">
               <Icon name="shield" size={14} />
               <span>{t.customOrder.successDisclaimer}</span>
@@ -324,9 +318,10 @@ export const CartModal: React.FC<CartModalProps> = ({
             </div>
 
             <div className="cart-form-group">
-              <label className="cart-form-label">{t.forms.email}</label>
+              <label className="cart-form-label">{t.forms.email} *</label>
               <input
                 type="email"
+                required
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
                 placeholder={t.forms.emailPlaceholder}

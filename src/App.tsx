@@ -10,9 +10,9 @@ import { Footer } from './components/layout/Footer';
 import { ScrollToTopButton } from './components/layout/ScrollToTop';
 import { CartModal } from './components/ui/CartModal';
 import { PhotoModal } from './components/ui/PhotoModal';
-import { VideoModal } from './components/ui/VideoModal';
 import { RequestFormModal } from './components/ui/RequestFormModal';
 import { ContactChoiceModal } from './components/ui/ContactChoiceModal';
+import { VideoModal } from './components/ui/VideoModal';
 
 import { HomePage } from './pages/HomePage';
 import { GalleryPage } from './pages/GalleryPage';
@@ -36,13 +36,21 @@ const AppContent: React.FC = () => {
     return VALID_PAGES.includes(hash as PageType) ? (hash as PageType) : 'home';
   });
 
+  const scrollToTop = () => {
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    });
+  };
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
       if (VALID_PAGES.includes(hash as PageType)) {
         setCurrentPage(hash as PageType);
+        scrollToTop();
       } else if (!hash) {
         setCurrentPage('home');
+        scrollToTop();
       }
     };
 
@@ -52,8 +60,12 @@ const AppContent: React.FC = () => {
 
   const handleNavigate = (page: PageType) => {
     setCurrentPage(page);
+    if (page === currentPage) {
+      scrollToTop();
+      return;
+    }
     window.location.hash = page === 'home' ? '' : page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   return (
