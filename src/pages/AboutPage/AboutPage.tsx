@@ -17,7 +17,8 @@ export interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
-  const { openPhotoModal, openVideoModal } = useModal();
+  // ← ОДИН вызов useModal() со всеми нужными методами
+  const { openPhotoModal, openVideoModal, openRequestModal } = useModal();
   useDocumentTitle(t.aboutPage.title);
 
   const [photoError, setPhotoError] = useState(false);
@@ -321,7 +322,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
       <CTABanner
         onOrderClick={() => onNavigate('calculator')}
-        onContactClick={() => onNavigate('contacts')}
+        onContactClick={() => openRequestModal(t.contacts.formTitle, 'question')}
       />
     </div>
   );

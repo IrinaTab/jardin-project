@@ -40,7 +40,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
     );
 
     const handleOpenVideo = () => openVideoModal(courseVideo);
-    const handleEnroll = () => openRequestModal(t.coursePage.formTitle);
+    const handleEnroll = () => openRequestModal(t.coursePage.formTitle, 'course');
 
     const learnItems = [
         t.coursePage.learnItem1,

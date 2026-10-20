@@ -206,10 +206,10 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                   className="contacts-success__icon"
                 />
                 <h3 className="contacts-success__title">
-                  {t.customOrder.successTitle}
+                  {t.forms.successQuestionTitle}
                 </h3>
                 <p className="contacts-success__text">
-                  {t.customOrder.successDesc}
+                  {t.forms.successQuestionDesc}
                 </p>
                 <Button variant="primary" onClick={() => setIsSuccess(false)}>
                   {t.contacts.sendAnother}

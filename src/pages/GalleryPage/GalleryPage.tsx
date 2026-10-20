@@ -5,6 +5,7 @@ import './GalleryPage.css';
 import { PageType } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useLanguage } from '../../context/LanguageContext';
+import { useModal } from '../../context/ModalContext';   // ← добавлен импорт
 import { GallerySection } from '../../components/sections/Gallery';
 import { SocialSubscribeBanner } from '../../components/sections/SocialSubscribeBanner';
 import { CTABanner } from '../../components/sections/CTA';
@@ -15,6 +16,7 @@ export interface GalleryPageProps {
 
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
+  const { openRequestModal } = useModal();
   useDocumentTitle(t.nav.gallery);
 
   return (
@@ -36,7 +38,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate }) => {
 
       <CTABanner
         onOrderClick={() => onNavigate('calculator')}
-        onContactClick={() => onNavigate('contacts')}
+        onContactClick={() => openRequestModal(t.contacts.formTitle, 'question')}
       />
     </div>
   );

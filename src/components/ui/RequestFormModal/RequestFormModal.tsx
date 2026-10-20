@@ -15,7 +15,12 @@ export interface RequestFormModalProps {
 }
 
 export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateToPrivacy }) => {
-  const { isRequestModalOpen, requestModalTitle, closeRequestModal } = useModal();
+  const {
+    isRequestModalOpen,
+    requestModalTitle,
+    requestModalMode,
+    closeRequestModal,
+  } = useModal();
   const { t } = useLanguage();
 
   const [name, setName] = useState('');
@@ -52,20 +57,52 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     setIsSubmitting(false);
     if (res.success) {
       setIsSuccess(true);
+      // Сброс полей после успешной отправки
       setName('');
       setPhone('');
       setEmail('');
       setMessage('');
+      setAgreed(false);
     } else {
       setErrorMsg(t.errors.generalError);
     }
   };
 
   const handleClose = () => {
+    // Полный сброс при закрытии
     setIsSuccess(false);
     setErrorMsg('');
+    setName('');
+    setPhone('');
+    setEmail('');
+    setMessage('');
+    setAgreed(false);
+    setMethod('telegram');
     closeRequestModal();
   };
+
+  // Текст кнопки по контексту
+  const submitLabel =
+    requestModalMode === 'course'
+      ? t.coursePage.heroCta          // «Записаться на курс»
+      : requestModalMode === 'custom'
+        ? t.forms.sendRequest          // «Отправить запрос»
+        : t.forms.send;                // «Отправить сообщение» (для вопроса)
+
+  // Тексты успеха по контексту
+  const successTitle =
+    requestModalMode === 'course'
+      ? t.forms.successCourseTitle
+      : requestModalMode === 'custom'
+        ? t.forms.successCustomTitle
+        : t.forms.successQuestionTitle;
+
+  const successDesc =
+    requestModalMode === 'course'
+      ? t.forms.successCourseDesc
+      : requestModalMode === 'custom'
+        ? t.forms.successCustomDesc
+        : t.forms.successQuestionDesc;
 
   return (
     <Modal
@@ -77,12 +114,8 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
       {isSuccess ? (
         <div className="request-success">
           <Icon name="check" size={56} className="request-success__icon" />
-          <h4 className="request-success__title">
-            {t.customOrder.successTitle}
-          </h4>
-          <p className="request-success__text">
-            {t.customOrder.successDesc}
-          </p>
+          <h4 className="request-success__title">{successTitle}</h4>
+          <p className="request-success__text">{successDesc}</p>
           <Button
             variant="primary"
             onClick={handleClose}
@@ -123,11 +156,10 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
 
           <div className="request-form__group">
             <label className="request-form__label">
-              {t.forms.email} *
+              {t.forms.email}
             </label>
             <input
               type="email"
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.forms.emailPlaceholder}
@@ -144,8 +176,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
                 <button
                   key={m}
                   type="button"
-                  className={`request-form__method-btn ${method === m ? 'request-form__method-btn--active' : ''
-                    }`}
+                  className={`request-form__method-btn ${method === m ? 'request-form__method-btn--active' : ''}`}
                   onClick={() => setMethod(m)}
                 >
                   {t.customOrder.methods[m]}
@@ -208,7 +239,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             disabled={isSubmitting}
             icon={<Icon name="sparkles" size={18} className="btn-sparkle-icon" />}
           >
-            {isSubmitting ? t.customOrder.sending : t.forms.sendRequest}
+            {isSubmitting ? t.customOrder.sending : submitLabel}
           </Button>
         </form>
       )}

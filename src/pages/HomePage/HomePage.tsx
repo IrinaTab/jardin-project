@@ -35,7 +35,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       <CTABanner
         onOrderClick={() => onNavigate('calculator')}
-        onContactClick={() => openRequestModal(t.contacts.formTitle)}
+        onContactClick={() => openRequestModal(t.contacts.formTitle, 'question')}
       />
     </div>
   );

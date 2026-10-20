@@ -54,9 +54,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setRequestModalMode(mode);
     setIsRequestModalOpen(true);
   };
+
   const closeRequestModal = () => {
     setIsRequestModalOpen(false);
     setRequestModalTitle('');
+    setRequestModalMode('question');
   };
 
   const openContactChoiceModal = (data?: { title?: string; onSelectMethod?: (method: string) => void }) => {

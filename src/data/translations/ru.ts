@@ -210,6 +210,12 @@ export const ru = {
     sendRequest: 'Отправить запрос',
     sent: 'Отправлено',
     requiredField: 'Обязательное поле',
+    successQuestionTitle: 'Сообщение отправлено!',
+    successQuestionDesc: 'Мастер получил ваш вопрос и ответит в ближайшее время.',
+    successCourseTitle: 'Заявка на курс принята!',
+    successCourseDesc: 'Мастер свяжется с вами в ближайшее время, расскажет детали курса и поможет с оплатой.',
+    successCustomTitle: 'Заявка принята!',
+    successCustomDesc: 'Мастер свяжется с вами в ближайшее время для уточнения деталей.',
   },
   errors: {
     requiredName: 'Пожалуйста, укажите ваше имя',
