@@ -35,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ activePage, onNavigate }) => {
     { page: 'home', label: t.nav.home },
     { page: 'about', label: t.nav.about },
     { page: 'gallery', label: t.nav.gallery },
+    { page: 'course', label: t.nav.course },
     { page: 'contacts', label: t.nav.contacts },
     { page: 'calculator', label: t.nav.calculator },
   ];

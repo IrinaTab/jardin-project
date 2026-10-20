@@ -20,6 +20,7 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactsPage } from './pages/ContactsPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { CalculatorPage } from './pages/CalculatorPage';
+import { CoursePage } from './pages/CoursePage';
 
 const VALID_PAGES: PageType[] = [
   'home',
@@ -28,6 +29,7 @@ const VALID_PAGES: PageType[] = [
   'contacts',
   'privacy',
   'calculator',
+  'course',
 ];
 
 const AppContent: React.FC = () => {
@@ -79,6 +81,7 @@ const AppContent: React.FC = () => {
         {currentPage === 'contacts' && <ContactsPage onNavigate={handleNavigate} />}
         {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={handleNavigate} />}
         {currentPage === 'calculator' && <CalculatorPage onNavigate={handleNavigate} />}
+        {currentPage === 'course' && <CoursePage onNavigate={handleNavigate} />}
       </main>
 
       <Footer onNavigate={handleNavigate} />

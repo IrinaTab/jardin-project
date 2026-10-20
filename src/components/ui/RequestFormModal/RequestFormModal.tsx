@@ -208,7 +208,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             disabled={isSubmitting}
             icon={<Icon name="sparkles" size={18} className="btn-sparkle-icon" />}
           >
-            {isSubmitting ? t.customOrder.sending : t.forms.send}
+            {isSubmitting ? t.customOrder.sending : t.forms.sendRequest}
           </Button>
         </form>
       )}

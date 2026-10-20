@@ -129,4 +129,9 @@ export interface VideoItem {
   description?: LocalizedText;
 }
 
-export type PageType = 'home' | 'gallery' | 'about' | 'contacts' | 'privacy' | 'calculator';
+export type PageType = 'home' | 'gallery' | 'about' | 'contacts' | 'privacy' | 'calculator' | 'course';
+/**
+ * Контекст, с которым открыта модалка формы запроса.
+ * Влияет на текст окна успеха.
+ */
+export type RequestModalMode = 'question' | 'course' | 'custom';
