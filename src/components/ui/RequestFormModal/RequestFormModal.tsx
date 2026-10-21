@@ -39,10 +39,25 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Валидация
+    if (!name.trim()) {
+      setErrorMsg(t.errors.requiredName);
+      return;
+    }
+    if (!email.trim()) {
+      setErrorMsg(t.errors.requiredEmail);
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      setErrorMsg(t.errors.invalidEmail);
+      return;
+    }
     if (!agreed) {
       setErrorMsg(t.errors.privacyRequired);
       return;
     }
+
     setErrorMsg('');
     setIsSubmitting(true);
 
@@ -57,7 +72,6 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     setIsSubmitting(false);
     if (res.success) {
       setIsSuccess(true);
-      // Сброс полей после успешной отправки
       setName('');
       setPhone('');
       setEmail('');
@@ -69,7 +83,6 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   };
 
   const handleClose = () => {
-    // Полный сброс при закрытии
     setIsSuccess(false);
     setErrorMsg('');
     setName('');
@@ -84,10 +97,10 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   // Текст кнопки по контексту
   const submitLabel =
     requestModalMode === 'course'
-      ? t.coursePage.heroCta          // «Записаться на курс»
+      ? t.coursePage.heroCta
       : requestModalMode === 'custom'
-        ? t.forms.sendRequest          // «Отправить запрос»
-        : t.forms.send;                // «Отправить сообщение» (для вопроса)
+        ? t.forms.sendRequest
+        : t.forms.send;
 
   // Тексты успеха по контексту
   const successTitle =
@@ -154,12 +167,14 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             />
           </div>
 
+          {/* Email — ОБЯЗАТЕЛЬНЫЙ */}
           <div className="request-form__group">
             <label className="request-form__label">
-              {t.forms.email}
+              {t.forms.email} *
             </label>
             <input
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.forms.emailPlaceholder}
