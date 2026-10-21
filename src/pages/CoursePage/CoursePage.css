@@ -269,7 +269,7 @@
 
 .course-format-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-md);
     padding: var(--space-lg);
     background: var(--gradient-capsule-light);
@@ -296,6 +296,8 @@
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: var(--text-lg);
+    line-height: 1;
+    padding: 0;
     flex-shrink: 0;
 }
 
@@ -374,6 +376,14 @@
     .course-learn-grid,
     .course-format-grid {
         grid-template-columns: 1fr;
+    }
+
+    .course-content__heading {
+        text-align: center;
+    }
+
+    .course-content__cta {
+        align-self: center;
     }
 }
 
