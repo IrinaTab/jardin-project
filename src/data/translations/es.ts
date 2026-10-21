@@ -92,8 +92,6 @@ export const es = {
     densityStandard: 'Estándar',
     densityTotal: 'Peso total',
     baseWeightLabel: 'Peso base:',
-    premiumTitle: 'Premium Virgen (Infantil)',
-    premiumDesc: 'Cabello de categoría superior — suave, vivo, brillo natural.',
     formulaNote: 'Coste del trabajo + Cabello (peso × €/g) × Coeficiente de longitud × Coeficiente de tono',
     totalPrice: 'Presupuesto estimado:',
     currency: '€',
@@ -120,6 +118,9 @@ export const es = {
     successTitle: '¡Solicitud Recibida!',
     successDesc: 'La maestra se pondrá en contacto con usted en breve para aclarar los detalles y confirmar el precio final.',
     successDisclaimer: 'El precio final puede diferir del cálculo preliminar — la maestra tendrá en cuenta todas sus preferencias.',
+    stepCategory: '2. Categoría de cabello',
+    categoryLabel: 'Seleccione la categoría de cabello:',
+    maxLengthLabel: 'Longitud máxima:',
   },
   gallery: {
     badge: 'Portafolio del Maestro',

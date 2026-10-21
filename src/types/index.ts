@@ -54,22 +54,44 @@ export interface LengthOption {
 }
 
 /**
+ * Категория волос (качество).
+ */
+export type HairCategoryId = 'luxe' | 'premium' | 'slavic-gold' | 'exclusive';
+
+/**
  * Позиция индивидуального заказа в корзине.
- * Каждая позиция — уникальная конфигурация (форма + длина + цвет + количество).
  */
 export interface CustomOrderCartItem {
   id: string;
-  shapeId: 'wig' | 'topper' | 'bangs' | 'strands' | 'wefts';
+  shapeId: ProductShapeId;
   shapeName: LocalizedText;
   lengthCm: number;
-  extraWeightGrams: number;       // добавка к стандартному весу
-  totalWeightGrams: number;       // общий вес (стандарт + добавка)
-  isPremiumHair: boolean;
+  extraWeightGrams: number;
+  totalWeightGrams: number;
+  hairCategory: HairCategoryId;
+  hairCategoryName: LocalizedText;
   colorId: string;
   colorName: LocalizedText;
   colorHex: string;
   quantity: number;
   unitPrice: number;
+}
+
+/**
+ * Конфиг категории волос.
+ */
+export interface HairCategoryConfig {
+  id: HairCategoryId;
+  name: LocalizedText;
+  description: LocalizedText;
+  /** Максимально доступная длина (см) */
+  maxLength: number;
+  /** Цена за 100 г по порогам длины */
+  pricePer100g: {
+    upTo50: number;
+    from50To60: number;
+    from60To70?: number;
+  };
 }
 
 export interface CustomOrderRequest {

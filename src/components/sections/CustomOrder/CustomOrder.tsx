@@ -5,10 +5,13 @@ import './CustomOrder.css';
 import { productShapes } from '../../../data/services';
 import { hairColors } from '../../../data/colors';
 import {
+  HAIR_CATEGORIES,
   SHAPE_PRICING,
-  LENGTH_COEFFICIENTS,
+  LENGTH_OPTIONS,
   calculatePrice,
+  clampLengthByCategory,
 } from '../../../data/pricing';
+import { HairCategoryId } from '../../../types';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useCart } from '../../../context/CartContext';
 import { SectionHeader } from '../../ui/SectionHeader';
@@ -26,10 +29,9 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
   const { language, t } = useLanguage();
   const { addCustomOrderItem } = useCart();
 
-  // Состояние калькулятора
   const [selectedShapeId, setSelectedShapeId] = useState<string>('wig-full');
   const [extraWeight, setExtraWeight] = useState<number>(0);
-  const [isPremiumHair, setIsPremiumHair] = useState<boolean>(false);
+  const [hairCategoryId, setHairCategoryId] = useState<HairCategoryId>('premium');
   const [selectedLength, setSelectedLength] = useState<number>(50);
   const [selectedColorId, setSelectedColorId] = useState<string>('medium-brown');
   const [quantity, setQuantity] = useState<number>(1);
@@ -38,30 +40,42 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
   const currentShape = productShapes.find((s) => s.id === selectedShapeId) || productShapes[0];
   const currentColor = hairColors.find((c) => c.id === selectedColorId) || hairColors[0];
   const currentPricing = SHAPE_PRICING[currentShape.id];
+  const currentCategory = HAIR_CATEGORIES.find((c) => c.id === hairCategoryId) || HAIR_CATEGORIES[1];
 
-  // Доступные опции густоты для текущего типа
   const availableWeightOptions = currentPricing?.allowedExtraWeights || [0];
 
-  // Расчёт цены
   const price = useMemo(
     () =>
       calculatePrice({
         shapeId: currentShape.id,
         extraWeightGrams: extraWeight,
-        isPremiumHair,
+        hairCategoryId,
         lengthCm: selectedLength,
         colorMultiplier: currentColor.priceMultiplier,
       }),
-    [currentShape.id, extraWeight, isPremiumHair, selectedLength, currentColor.priceMultiplier]
+    [currentShape.id, extraWeight, hairCategoryId, selectedLength, currentColor.priceMultiplier]
   );
 
   const handleShapeChange = (shapeId: string) => {
     setSelectedShapeId(shapeId);
-    // Сбрасываем вес, если текущий выбор не поддерживается новым типом
     const newPricing = SHAPE_PRICING[shapeId];
     if (newPricing && !newPricing.allowedExtraWeights.includes(extraWeight)) {
       setExtraWeight(0);
     }
+  };
+
+  const handleCategoryChange = (categoryId: HairCategoryId) => {
+    setHairCategoryId(categoryId);
+    // Ограничиваем длину по категории
+    const clamped = clampLengthByCategory(categoryId, selectedLength);
+    if (clamped !== selectedLength) {
+      setSelectedLength(clamped);
+    }
+  };
+
+  const handleLengthChange = (length: number) => {
+    const clamped = clampLengthByCategory(hairCategoryId, length);
+    setSelectedLength(clamped);
   };
 
   const handleQuantityChange = (delta: number) => {
@@ -75,7 +89,8 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
       lengthCm: selectedLength,
       extraWeightGrams: extraWeight,
       totalWeightGrams: price.totalWeightGrams,
-      isPremiumHair,
+      hairCategory: hairCategoryId,
+      hairCategoryName: currentCategory.name,
       colorId: currentColor.id,
       colorName: currentColor.name,
       colorHex: currentColor.hex,
@@ -87,7 +102,6 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
     setTimeout(() => setJustAdded(false), 2000);
   };
 
-  // Граммы — для локализации
   const gramUnit = language === 'ru' ? 'г' : 'g';
 
   return (
@@ -100,9 +114,8 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
         />
 
         <div className="custom-order-calculator">
-          {/* ЛЕВАЯ КОЛОНКА — конфигурация */}
           <div className="calc-config-col">
-            {/* Шаг 1: Тип изделия — SELECT + описание */}
+            {/* Шаг 1: Тип изделия */}
             <div className="calc-step">
               <h3 className="calc-step__title">
                 <Icon name="crown" size={18} />
@@ -126,7 +139,6 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
                 ))}
               </select>
 
-              {/* Карточка с описанием выбранного типа — как shape-option-card */}
               {currentShape && (
                 <div className="shape-option-card shape-option-card--active shape-option-card--description">
                   <div className="shape-option-name">{currentShape.name[language]}</div>
@@ -139,7 +151,41 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
               )}
             </div>
 
-            {/* Шаг 2: Густота */}
+            {/* Шаг 2: Категория волос */}
+            <div className="calc-step">
+              <h3 className="calc-step__title">
+                <Icon name="diamond" size={18} />
+                <span>{t.customOrder.stepCategory}</span>
+              </h3>
+
+              <label className="calc-select-label" htmlFor="calc-category-select">
+                {t.customOrder.categoryLabel}
+              </label>
+
+              <select
+                id="calc-category-select"
+                className="calc-select"
+                value={hairCategoryId}
+                onChange={(e) => handleCategoryChange(e.target.value as HairCategoryId)}
+              >
+                {HAIR_CATEGORIES.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name[language]}
+                  </option>
+                ))}
+              </select>
+
+              <div className="shape-option-card shape-option-card--active shape-option-card--description">
+                <div className="shape-option-name">{currentCategory.name[language]}</div>
+                <div className="shape-option-sub">{currentCategory.description[language]}</div>
+                <div className="shape-option-meta">
+                  {t.customOrder.maxLengthLabel}{' '}
+                  <strong>{currentCategory.maxLength} {t.shop.cm}</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Шаг 3: Густота */}
             <div className="calc-step">
               <h3 className="calc-step__title">
                 <Icon name="sparkles" size={18} />
@@ -149,18 +195,12 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
               <div className="length-quick-pills">
                 {availableWeightOptions.map((weight) => {
                   const isActive = extraWeight === weight;
-                  const label =
-                    weight === 0
-                      ? t.customOrder.densityStandard
-                      : `+${weight} ${gramUnit}`;
+                  const label = weight === 0 ? t.customOrder.densityStandard : `+${weight} ${gramUnit}`;
                   return (
                     <button
                       key={weight}
                       type="button"
-                      className={cn(
-                        'length-pill-btn',
-                        isActive && 'length-pill-btn--active'
-                      )}
+                      className={cn('length-pill-btn', isActive && 'length-pill-btn--active')}
                       onClick={() => setExtraWeight(weight)}
                     >
                       {label}
@@ -171,13 +211,12 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
 
               <div className="calc-density-info">
                 <span>
-                  {t.customOrder.densityTotal}:{' '}
-                  <strong>{price.totalWeightGrams} {gramUnit}</strong>
+                  {t.customOrder.densityTotal}: <strong>{price.totalWeightGrams} {gramUnit}</strong>
                 </span>
               </div>
             </div>
 
-            {/* Шаг 3: Длина */}
+            {/* Шаг 4: Длина */}
             <div className="calc-step">
               <h3 className="calc-step__title">
                 <Icon name="feather" size={18} />
@@ -194,36 +233,30 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
                   </span>
                 </div>
 
-                <input
-                  type="range"
-                  min={30}
-                  max={70}
-                  step={10}
-                  value={selectedLength}
-                  onChange={(e) => setSelectedLength(Number(e.target.value))}
-                  className="length-slider-range"
-                  aria-label="Выбор длины волос в сантиметрах"
-                />
-
                 <div className="length-quick-pills">
-                  {LENGTH_COEFFICIENTS.map((opt) => (
-                    <button
-                      key={opt.lengthCm}
-                      type="button"
-                      className={cn(
-                        'length-pill-btn',
-                        selectedLength === opt.lengthCm && 'length-pill-btn--active'
-                      )}
-                      onClick={() => setSelectedLength(opt.lengthCm)}
-                    >
-                      {opt.lengthCm} {t.shop.cm}
-                    </button>
-                  ))}
+                  {LENGTH_OPTIONS.map((len) => {
+                    const isDisabled = len > currentCategory.maxLength;
+                    return (
+                      <button
+                        key={len}
+                        type="button"
+                        className={cn(
+                          'length-pill-btn',
+                          selectedLength === len && 'length-pill-btn--active'
+                        )}
+                        onClick={() => handleLengthChange(len)}
+                        disabled={isDisabled}
+                        style={isDisabled ? { opacity: 0.35, cursor: 'not-allowed' } : undefined}
+                      >
+                        {len} {t.shop.cm}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* Шаг 4: Цвет */}
+            {/* Шаг 5: Цвет */}
             <div className="calc-step">
               <h3 className="calc-step__title">
                 <Icon name="sparkles" size={18} />
@@ -235,28 +268,9 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
                 onSelectColor={(color) => setSelectedColorId(color.id)}
               />
             </div>
-
-            {/* Шаг 5: Премиум-волосы */}
-            <div className="calc-step">
-              <label className="calc-premium-toggle">
-                <input
-                  type="checkbox"
-                  checked={isPremiumHair}
-                  onChange={(e) => setIsPremiumHair(e.target.checked)}
-                />
-                <div className="calc-premium-toggle__content">
-                  <span className="calc-premium-toggle__title">
-                    {t.customOrder.premiumTitle}
-                  </span>
-                  <span className="calc-premium-toggle__desc">
-                    {t.customOrder.premiumDesc}
-                  </span>
-                </div>
-              </label>
-            </div>
           </div>
 
-          {/* ПРАВАЯ КОЛОНКА — цена + кнопка */}
+          {/* Правая колонка — цена */}
           <div className="calc-summary-col">
             <div className="calc-price-display-box">
               <div className="calc-price-label">{t.customOrder.totalPrice}</div>
@@ -275,19 +289,11 @@ export const CustomOrder: React.FC<CustomOrderProps> = ({ className = '' }) => {
               <div className="calc-quantity-row">
                 <span>{t.customOrder.quantityLabel}</span>
                 <div className="calc-qty-control">
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(-1)}
-                    aria-label="Уменьшить количество"
-                  >
+                  <button type="button" onClick={() => handleQuantityChange(-1)} aria-label="Уменьшить">
                     <Icon name="minus" size={14} />
                   </button>
                   <span>{quantity}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(1)}
-                    aria-label="Увеличить количество"
-                  >
+                  <button type="button" onClick={() => handleQuantityChange(1)} aria-label="Увеличить">
                     <Icon name="plus" size={14} />
                   </button>
                 </div>

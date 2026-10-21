@@ -19,15 +19,13 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 /**
- * Обновлено на v3 — структура позиции расширена:
- * extraWeightGrams, totalWeightGrams, isPremiumHair.
+ * Ключ localStorage для корзины.
+ * v4 — новая структура позиции (hairCategory вместо isPremiumHair).
  */
-const CART_STORAGE_KEY = 'jardin_custom_order_cart_v3';
+const CART_STORAGE_KEY = 'jardin_custom_order_cart_v4';
 
 /**
- * Валидация позиции корзины, загруженной из localStorage.
- * Защищает приложение от падения, если в хранилище лежат
- * данные старого/повреждённого формата.
+ * Валидация позиции корзины.
  */
 function isValidCartItem(item: unknown): item is CustomOrderCartItem {
   if (!item || typeof item !== 'object') return false;
@@ -44,7 +42,12 @@ function isValidCartItem(item: unknown): item is CustomOrderCartItem {
     typeof it.lengthCm === 'number' &&
     typeof it.extraWeightGrams === 'number' &&
     typeof it.totalWeightGrams === 'number' &&
-    typeof it.isPremiumHair === 'boolean' &&
+    typeof it.hairCategory === 'string' &&
+    it.hairCategoryName !== null &&
+    typeof it.hairCategoryName === 'object' &&
+    typeof (it.hairCategoryName as Record<string, unknown>).ru === 'string' &&
+    typeof (it.hairCategoryName as Record<string, unknown>).en === 'string' &&
+    typeof (it.hairCategoryName as Record<string, unknown>).es === 'string' &&
     typeof it.colorId === 'string' &&
     it.colorName !== null &&
     typeof it.colorName === 'object' &&

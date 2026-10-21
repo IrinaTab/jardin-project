@@ -95,7 +95,7 @@ export const CartModal: React.FC<CartModalProps> = ({
     const itemsSummary = items
       .map((item, idx) => {
         const subtotal = item.unitPrice * item.quantity;
-        return `${idx + 1}. ${item.shapeName[language]} — ${item.lengthCm} см — ${item.colorName[language]}\n   ${item.quantity} × ${formatPrice(item.unitPrice, '€', language)} = ${formatPrice(subtotal, '€', language)}`;
+        return `${idx + 1}. ${item.shapeName[language]} — ${item.lengthCm} ${t.shop.cm} — ${item.colorName[language]} — ${item.hairCategoryName[language]}\n   ${item.quantity} × ${formatPrice(item.unitPrice, '€', language)} = ${formatPrice(subtotal, '€', language)}`;
       })
       .join('\n\n');
 
@@ -207,11 +207,9 @@ export const CartModal: React.FC<CartModalProps> = ({
                           {t.customOrder.densityTotal}: {item.totalWeightGrams} {language === 'ru' ? 'г' : 'g'}
                         </span>
                       )}
-                      {item.isPremiumHair && (
-                        <span className="cart-item-premium">
-                          ⭐ {language === 'ru' ? 'Премиум' : language === 'es' ? 'Premium' : 'Premium'}
-                        </span>
-                      )}
+                      <span className="cart-item-premium">
+                        ⭐ {item.hairCategoryName[language]}
+                      </span>
                     </div>
                     <div className="cart-item-price">
                       {formatPrice(item.unitPrice * item.quantity, '€', language)}

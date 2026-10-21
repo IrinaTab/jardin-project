@@ -92,8 +92,6 @@ export const en = {
     densityStandard: 'Standard',
     densityTotal: 'Total weight',
     baseWeightLabel: 'Base weight:',
-    premiumTitle: 'Premium Virgin (Kids)',
-    premiumDesc: 'Top-category hair — soft, alive, natural shine.',
     formulaNote: 'Work cost + Hair (weight × €/g) × Length coefficient × Shade coefficient',
     totalPrice: 'Estimated Investment:',
     currency: '€',
@@ -120,6 +118,9 @@ export const en = {
     successTitle: 'Request Accepted!',
     successDesc: 'The master will contact you shortly to clarify details and confirm the final price.',
     successDisclaimer: 'The final price may differ from the preliminary estimate — the master will consider all your preferences.',
+    stepCategory: '2. Hair Category',
+    categoryLabel: 'Select hair category:',
+    maxLengthLabel: 'Max length:',
   },
   gallery: {
     badge: 'Master Portfolio',
