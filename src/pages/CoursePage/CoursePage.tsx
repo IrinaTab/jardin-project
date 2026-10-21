@@ -136,15 +136,17 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
                         badge="Программа"
                         title={t.coursePage.whatYouLearnTitle}
                     />
-                    <div className="course-learn-grid">
-                        {learnItems.map((item, idx) => (
-                            <div key={idx} className="course-learn-item">
-                                <span className="course-learn-item__check">
-                                    <Icon name="check" size={16} />
-                                </span>
-                                <span>{item}</span>
-                            </div>
-                        ))}
+                    <div className="course-learn-card">
+                        <ul className="course-learn-list">
+                            {learnItems.map((item, idx) => (
+                                <li key={idx} className="course-learn-item">
+                                    <span className="course-learn-item__check">
+                                        <Icon name="check" size={18} />
+                                    </span>
+                                    <span className="course-learn-item__text">{item}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </section>
