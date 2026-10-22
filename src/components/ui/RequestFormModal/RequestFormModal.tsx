@@ -21,7 +21,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     requestModalMode,
     closeRequestModal,
   } = useModal();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();   // ← добавлен language
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -61,12 +61,21 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     setErrorMsg('');
     setIsSubmitting(true);
 
+    const formType =
+      requestModalMode === 'course'
+        ? 'course'
+        : requestModalMode === 'custom'
+          ? 'custom'
+          : 'question';
+
     const res = await sendRequest({
       name,
       phone,
       email,
-      message: `${requestModalTitle ? `[Тема: ${requestModalTitle}] ` : ''}${message}`,
+      message,
       preferredMethod: method,
+      formType,
+      language,
     });
 
     setIsSubmitting(false);

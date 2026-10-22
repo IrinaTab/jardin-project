@@ -65,7 +65,9 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
       phone,
       email,
       message,
-      preferredMethod: 'Форма контактов',
+      preferredMethod: 'contact',
+      formType: 'contact',
+      language,
     });
 
     setIsSubmitting(false);

@@ -95,18 +95,29 @@ export const CartModal: React.FC<CartModalProps> = ({
     const itemsSummary = items
       .map((item, idx) => {
         const subtotal = item.unitPrice * item.quantity;
-        return `${idx + 1}. ${item.shapeName[language]} — ${item.lengthCm} ${t.shop.cm} — ${item.colorName[language]} — ${item.hairCategoryName[language]}\n   ${item.quantity} × ${formatPrice(item.unitPrice, '€', language)} = ${formatPrice(subtotal, '€', language)}`;
+        return (
+          `<b>${idx + 1}. ${item.shapeName[language]}</b>\n` +
+          `   • Длина: ${item.lengthCm} ${t.shop.cm}\n` +
+          `   • Цвет: ${item.colorName[language]}\n` +
+          `   • Категория: ${item.hairCategoryName[language]}\n` +
+          (item.totalWeightGrams > 0 ? `   • Вес: ${item.totalWeightGrams} г\n` : '') +
+          `   • ${item.quantity} × ${formatPrice(item.unitPrice, '€', language)} = <b>${formatPrice(subtotal, '€', language)}</b>`
+        );
       })
       .join('\n\n');
-
-    const message = `Состав заявки (${items.length} поз., итого ${formatPrice(totalPrice, '€', language)}):\n\n${itemsSummary}`;
 
     const result = await sendRequest({
       name: clientName,
       phone: clientPhone,
       email: clientEmail,
-      message,
-      preferredMethod: contactMethod,
+      comment: itemsSummary,
+      shape: items[0]?.shapeId || '',
+      lengthCm: items[0]?.lengthCm || 0,
+      colorId: items[0]?.colorId || '',
+      colorName: items[0]?.colorName[language] || '',
+      calculatedPrice: totalPrice,
+      contactMethod,
+      agreedToPrivacy: agreed,
     });
 
     setIsSubmitting(false);

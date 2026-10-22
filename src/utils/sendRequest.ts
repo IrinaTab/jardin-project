@@ -9,7 +9,142 @@ export interface FeedbackRequestData {
   email?: string;
   message?: string;
   preferredMethod?: string;
+  /** Контекст формы: 'contact' | 'question' | 'course' | 'custom' */
+  formType?: 'contact' | 'question' | 'course' | 'custom';
+  /** Язык, на котором заполнена форма */
+  language?: 'ru' | 'en' | 'es';
 }
+
+// ============================================
+// Константы форматирования
+// ============================================
+
+const FORM_HEADERS: Record<string, string> = {
+  contact: '📩 <b>НОВОЕ ОБРАЩЕНИЕ С ФОРМЫ КОНТАКТОВ</b>',
+  question: '❓ <b>ВОПРОС МАСТЕРУ С САЙТА</b>',
+  course: '🎓 <b>ЗАЯВКА НА КУРС</b>',
+  custom: '🛒 <b>НОВАЯ ЗАЯВКА НА ПОШИВ</b>',
+};
+
+const LANG_LABELS: Record<string, string> = {
+  ru: '🇷🇺 Русский',
+  en: '🇬🇧 English',
+  es: '🇪🇸 Español',
+};
+
+const METHOD_LABELS: Record<string, string> = {
+  telegram: 'Telegram',
+  whatsapp: 'WhatsApp',
+  phone: '📞 Звонок',
+  email: '✉️ Email',
+};
+
+function formatDateTime(): string {
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, '0');
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const yyyy = now.getFullYear();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  return `${dd}.${mm}.${yyyy}, ${hh}:${min}`;
+}
+
+// ============================================
+// Обычное обращение (контакты / вопрос / курс)
+// ============================================
+
+function formatFeedbackMessage(data: FeedbackRequestData): string {
+  const lines: string[] = [];
+
+  // Заголовок
+  lines.push(FORM_HEADERS[data.formType || 'contact']);
+  lines.push('━━━━━━━━━━━━━━━━━━━━');
+  lines.push('');
+
+  // Контактные данные
+  lines.push(`👤 <b>Имя:</b> ${data.name}`);
+  lines.push(`📞 <b>Телефон:</b> ${data.phone}`);
+  if (data.email) {
+    lines.push(`✉️ <b>Email:</b> ${data.email}`);
+  }
+
+  // Способ связи
+  if (data.preferredMethod) {
+    const methodKey = data.preferredMethod.toLowerCase();
+    const methodLabel = METHOD_LABELS[methodKey] || data.preferredMethod;
+    lines.push(`💬 <b>Способ связи:</b> ${methodLabel}`);
+  }
+
+  lines.push('');
+
+  // Сообщение (обрезаем длинные, чтобы не превысить лимит 4096 символов)
+  if (data.message) {
+    const msg = data.message.length > 3000
+      ? data.message.slice(0, 3000) + '...'
+      : data.message;
+    lines.push('📝 <b>Сообщение:</b>');
+    lines.push(msg);
+    lines.push('');
+  }
+
+  // Футер
+  lines.push('━━━━━━━━━━━━━━━━━━━━');
+  if (data.language) {
+    lines.push(`🌐 ${LANG_LABELS[data.language] || data.language}`);
+  }
+  lines.push(`🕐 ${formatDateTime()}`);
+
+  return lines.join('\n');
+}
+
+// ============================================
+// Заявка на пошив (состав корзины)
+// ============================================
+
+function formatCustomOrderMessage(data: CustomOrderRequest): string {
+  const lines: string[] = [];
+
+  lines.push(FORM_HEADERS.custom);
+  lines.push('━━━━━━━━━━━━━━━━━━━━');
+  lines.push('');
+
+  // Клиент
+  lines.push(`👤 <b>Имя:</b> ${data.name}`);
+  lines.push(`📞 <b>Телефон:</b> ${data.phone}`);
+  if (data.email) {
+    lines.push(`✉️ <b>Email:</b> ${data.email}`);
+  }
+  if (data.contactMethod) {
+    const methodLabel = METHOD_LABELS[data.contactMethod] || data.contactMethod;
+    lines.push(`💬 <b>Способ связи:</b> ${methodLabel}`);
+  }
+
+  lines.push('');
+
+  // Состав заявки (из message)
+  if (data.comment) {
+    lines.push('📦 <b>Состав заявки:</b>');
+    lines.push('');
+    lines.push(data.comment);
+    lines.push('');
+  }
+
+  // Итоговая сумма
+  lines.push('━━━━━━━━━━━━━━━━━━━━');
+  lines.push(
+    `💰 <b>Итого: ${data.calculatedPrice.toLocaleString('ru-RU')} €</b>`
+  );
+  lines.push('');
+
+  // Футер
+  lines.push(`🕐 ${formatDateTime()}`);
+
+  return lines.join('\n');
+}
+
+// ============================================
+// Главная функция
+// ============================================
 
 export async function sendRequest(
   data: CustomOrderRequest | FeedbackRequestData
@@ -18,43 +153,35 @@ export async function sendRequest(
     let messageText = '';
 
     if ('shape' in data) {
-      // Custom Order Request
-      messageText =
-        `✨ <b>НОВАЯ ЗАЯВКА НА ПОШИВ (Jardin Atelier)</b>\n\n` +
-        `👤 <b>Клиент:</b> ${data.name}\n` +
-        `📞 <b>Телефон:</b> ${data.phone}\n` +
-        `✉️ <b>Email:</b> ${data.email || 'Не указан'}\n` +
-        `💇‍♀️ <b>Форма:</b> ${data.shape}\n` +
-        `📏 <b>Длина:</b> ${data.lengthCm} см\n` +
-        `🎨 <b>Оттенок:</b> ${data.colorName} (${data.colorId})\n` +
-        `💰 <b>Расчетная сумма:</b> ${data.calculatedPrice.toLocaleString('ru-RU')} €\n` +
-        `💬 <b>Способ связи:</b> ${data.contactMethod || 'Любой'}\n` +
-        (data.comment ? `📝 <b>Комментарий:</b> ${data.comment}\n` : '');
+      // Корзина — расширенный формат
+      messageText = formatCustomOrderMessage(data);
     } else {
-      // General feedback inquiry
-      messageText =
-        `📩 <b>НОВОЕ ОБРАЩЕНИЕ С САЙТА (Jardin)</b>\n\n` +
-        `👤 <b>Имя:</b> ${data.name}\n` +
-        `📞 <b>Телефон:</b> ${data.phone}\n` +
-        `✉️ <b>Email:</b> ${data.email || 'Не указан'}\n` +
-        (data.preferredMethod ? `💬 <b>Способ связи:</b> ${data.preferredMethod}\n` : '') +
-        (data.message ? `📝 <b>Сообщение:</b> ${data.message}\n` : '');
+      // Обычная форма
+      messageText = formatFeedbackMessage(data);
     }
 
-    // Save locally for persistence / demonstration
+    // Сохраняем локально (для резервной копии)
     try {
-      const existingInquiries = JSON.parse(localStorage.getItem('jardin_inquiries') || '[]');
-      existingInquiries.push({ ...data, createdAt: new Date().toISOString() });
-      localStorage.setItem('jardin_inquiries', JSON.stringify(existingInquiries));
+      const existingInquiries = JSON.parse(
+        localStorage.getItem('jardin_inquiries') || '[]'
+      );
+      existingInquiries.push({
+        ...data,
+        createdAt: new Date().toISOString(),
+      });
+      localStorage.setItem(
+        'jardin_inquiries',
+        JSON.stringify(existingInquiries)
+      );
     } catch {
-      // ignore localStorage errors
+      // ignore
     }
 
-    // Send Telegram Notification
+    // Отправка в Telegram
     await sendTelegramMessage(messageText);
 
-    // Simulate short network latency for realism
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    // Небольшая задержка для реализма
+    await new Promise((resolve) => setTimeout(resolve, 400));
 
     return { success: true };
   } catch (err) {
