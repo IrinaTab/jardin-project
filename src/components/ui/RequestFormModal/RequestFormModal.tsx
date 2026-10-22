@@ -1,6 +1,6 @@
 // src/components/ui/RequestFormModal/RequestFormModal.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './RequestFormModal.css';
 import { Modal } from '../Modal';
 import { useModal } from '../../../context/ModalContext';
@@ -9,6 +9,7 @@ import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { formatPhone } from '../../../utils/formatPhone';
 import { sendRequest } from '../../../utils/sendRequest';
+import { isSpamBot } from '../../../utils/antiSpam';
 
 export interface RequestFormModalProps {
   onNavigateToPrivacy?: () => void;
@@ -21,7 +22,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     requestModalMode,
     closeRequestModal,
   } = useModal();
-  const { language, t } = useLanguage();   // ← добавлен language
+  const { language, t } = useLanguage();
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -32,6 +33,17 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Honeypot + время открытия формы
+  const [honeypot, setHoneypot] = useState('');
+  const formStartTime = useRef<number>(Date.now());
+
+  // Сбрасываем таймер при каждом открытии модалки
+  React.useEffect(() => {
+    if (isRequestModalOpen) {
+      formStartTime.current = Date.now();
+    }
+  }, [isRequestModalOpen]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(formatPhone(e.target.value));
@@ -55,6 +67,20 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     }
     if (!agreed) {
       setErrorMsg(t.errors.privacyRequired);
+      return;
+    }
+
+    // Антиспам: honeypot + время заполнения
+    if (isSpamBot(honeypot, formStartTime.current)) {
+      // Не отправляем, но показываем «успех» — бот не поймёт, что пойман
+      console.info('[anti-spam] Заблокирована заявка от бота');
+      setIsSuccess(true);
+      setName('');
+      setPhone('');
+      setEmail('');
+      setMessage('');
+      setAgreed(false);
+      setHoneypot('');
       return;
     }
 
@@ -86,6 +112,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
       setEmail('');
       setMessage('');
       setAgreed(false);
+      setHoneypot('');
     } else {
       setErrorMsg(t.errors.generalError);
     }
@@ -99,11 +126,11 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     setEmail('');
     setMessage('');
     setAgreed(false);
+    setHoneypot('');
     setMethod('telegram');
     closeRequestModal();
   };
 
-  // Текст кнопки по контексту
   const submitLabel =
     requestModalMode === 'course'
       ? t.coursePage.heroCta
@@ -111,7 +138,6 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
         ? t.forms.sendRequest
         : t.forms.send;
 
-  // Тексты успеха по контексту
   const successTitle =
     requestModalMode === 'course'
       ? t.forms.successCourseTitle
@@ -148,6 +174,20 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="request-form">
+          {/* Honeypot — скрытое поле от ботов */}
+          <div className="honeypot-field" aria-hidden="true">
+            <label htmlFor="website-url">Website</label>
+            <input
+              type="text"
+              id="website-url"
+              name="website_url"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
           <div className="request-form__group">
             <label className="request-form__label">
               {t.forms.name} *
@@ -176,7 +216,6 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             />
           </div>
 
-          {/* Email — ОБЯЗАТЕЛЬНЫЙ */}
           <div className="request-form__group">
             <label className="request-form__label">
               {t.forms.email} *

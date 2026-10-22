@@ -1,6 +1,6 @@
 // src/components/ui/CartModal/CartModal.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './CartModal.css';
 import { Modal } from '../Modal';
 import { useCart } from '../../../context/CartContext';
@@ -10,6 +10,7 @@ import { formatPhone, isValidPhone } from '../../../utils/formatPhone';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { sendRequest } from '../../../utils/sendRequest';
+import { isSpamBot } from '../../../utils/antiSpam';
 
 export interface CartModalProps {
   onNavigateToPrivacy?: () => void;
@@ -43,6 +44,17 @@ export const CartModal: React.FC<CartModalProps> = ({
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Honeypot — защита от спама
+  const [honeypot, setHoneypot] = useState('');
+  const formStartTime = useRef<number>(Date.now());
+
+  // Сбрасываем таймер при входе в форму
+  useEffect(() => {
+    if (view === 'form') {
+      formStartTime.current = Date.now();
+    }
+  }, [view]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClientPhone(formatPhone(e.target.value));
@@ -89,6 +101,14 @@ export const CartModal: React.FC<CartModalProps> = ({
       return;
     }
 
+    // Антиспам: honeypot + время заполнения
+    if (isSpamBot(honeypot, formStartTime.current)) {
+      console.info('[anti-spam] Заблокирована заявка от бота (cart)');
+      setView('success');
+      setHoneypot('');
+      return;
+    }
+
     setError('');
     setIsSubmitting(true);
 
@@ -124,6 +144,7 @@ export const CartModal: React.FC<CartModalProps> = ({
 
     if (result.success) {
       setView('success');
+      setHoneypot('');
     } else {
       setError(result.message || t.errors.generalError);
     }
@@ -137,6 +158,7 @@ export const CartModal: React.FC<CartModalProps> = ({
       setClientEmail('');
       setComment('');
       setAgreed(false);
+      setHoneypot('');
       setView('cart');
     }
     setError('');
@@ -295,6 +317,20 @@ export const CartModal: React.FC<CartModalProps> = ({
         {/* FORM VIEW */}
         {view === 'form' && (
           <form onSubmit={handleSubmit} className="cart-form">
+            {/* Honeypot — скрытое поле от ботов */}
+            <div className="honeypot-field" aria-hidden="true">
+              <label htmlFor="website-url-cart">Website</label>
+              <input
+                type="text"
+                id="website-url-cart"
+                name="website_url"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
+
             <div className="cart-form-summary">
               <span className="cart-form-summary-label">{t.cart.orderSummary}</span>
               <span className="cart-form-summary-value">

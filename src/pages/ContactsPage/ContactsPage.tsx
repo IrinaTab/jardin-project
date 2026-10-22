@@ -1,6 +1,6 @@
 // src/pages/ContactsPage/ContactsPage.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './ContactsPage.css';
 import { PageType } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
@@ -11,6 +11,7 @@ import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
 import { formatPhone, isValidPhone } from '../../utils/formatPhone';
 import { sendRequest } from '../../utils/sendRequest';
+import { isSpamBot } from '../../utils/antiSpam';
 
 export interface ContactsPageProps {
   onNavigate: (page: PageType) => void;
@@ -28,6 +29,10 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Honeypot — защита от спама
+  const [honeypot, setHoneypot] = useState('');
+  const formStartTime = useRef<number>(Date.now());
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(formatPhone(e.target.value));
@@ -57,6 +62,19 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
       return;
     }
 
+    // Антиспам: honeypot + время заполнения
+    if (isSpamBot(honeypot, formStartTime.current)) {
+      console.info('[anti-spam] Заблокирована заявка от бота (contacts)');
+      setIsSuccess(true);
+      setName('');
+      setPhone('');
+      setEmail('');
+      setMessage('');
+      setAgreed(false);
+      setHoneypot('');
+      return;
+    }
+
     setErrorMsg('');
     setIsSubmitting(true);
 
@@ -78,9 +96,17 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
       setEmail('');
       setMessage('');
       setAgreed(false);
+      setHoneypot('');
     } else {
       setErrorMsg(t.errors.generalError);
     }
+  };
+
+  const handleSendAnother = () => {
+    setIsSuccess(false);
+    setErrorMsg('');
+    setHoneypot('');
+    formStartTime.current = Date.now(); // сбрасываем таймер
   };
 
   return (
@@ -213,12 +239,26 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                 <p className="contacts-success__text">
                   {t.forms.successQuestionDesc}
                 </p>
-                <Button variant="primary" onClick={() => setIsSuccess(false)}>
+                <Button variant="primary" onClick={handleSendAnother}>
                   {t.contacts.sendAnother}
                 </Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contacts-form">
+                {/* Honeypot — скрытое поле от ботов */}
+                <div className="honeypot-field" aria-hidden="true">
+                  <label htmlFor="website-url-contacts">Website</label>
+                  <input
+                    type="text"
+                    id="website-url-contacts"
+                    name="website_url"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <div>
                   <h3 className="contacts-form__title">{t.contacts.formTitle}</h3>
                   <p className="contacts-form__subtitle">{t.contacts.formSubtitle}</p>
