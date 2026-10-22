@@ -1,5 +1,9 @@
 // src/types/index.ts
 
+/**
+ * Единственный источник истины для типа языка.
+ * Все остальные модули импортируют Language отсюда.
+ */
 export type Language = 'ru' | 'en' | 'es';
 
 export interface LocalizedText {
@@ -108,14 +112,6 @@ export interface CustomOrderRequest {
   agreedToPrivacy: boolean;
 }
 
-export interface GalleryItem {
-  id: string;
-  imageUrl: string;
-  title: LocalizedText;
-  category: string;
-  description: LocalizedText;
-}
-
 export interface Advantage {
   id: string;
   title: LocalizedText;
@@ -135,14 +131,17 @@ export interface ContactInfo {
   tiktok: string;
   facebook: string;
 }
+
 export interface GalleryItem {
   id: string;
   imageUrl: string;
   title: LocalizedText;
   category: string;
   description: LocalizedText;
+  /** Скрыть кнопку «Заказать похожее» в PhotoModal (для служебных фото) */
   hideOrderButton?: boolean;
 }
+
 export interface VideoItem {
   id: string;
   videoUrl: string;
@@ -151,7 +150,15 @@ export interface VideoItem {
   description?: LocalizedText;
 }
 
-export type PageType = 'home' | 'gallery' | 'about' | 'contacts' | 'privacy' | 'calculator' | 'course';
+export type PageType =
+  | 'home'
+  | 'gallery'
+  | 'about'
+  | 'contacts'
+  | 'privacy'
+  | 'calculator'
+  | 'course';
+
 /**
  * Контекст, с которым открыта модалка формы запроса.
  * Влияет на текст окна успеха.
