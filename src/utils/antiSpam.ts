@@ -15,7 +15,7 @@ export function isSpamBot(honeypotValue: string, startTime: number): boolean {
 
     // 2. Время заполнения: меньше 3 секунд — почти наверняка бот
     const elapsedMs = Date.now() - startTime;
-    const MIN_FILL_TIME_MS = 3000;
+    const MIN_FILL_TIME_MS = 2000;
 
     if (elapsedMs < MIN_FILL_TIME_MS) {
         return true;
