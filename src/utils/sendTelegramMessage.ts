@@ -1,3 +1,17 @@
+// src/utils/sendTelegramMessage.ts
+
+/**
+ * Экранирует спецсимволы HTML, чтобы пользовательский ввод
+ * не ломал разметку при отправке в Telegram (parse_mode: 'HTML').
+ */
+export function escapeHtml(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')  // Амперсанд должен быть первым!
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 /**
  * Sends a notification message to a Telegram chat using Telegram Bot API
  */
@@ -25,7 +39,13 @@ export async function sendTelegramMessage(text: string): Promise<boolean> {
       }),
     });
 
-    return response.ok;
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Telegram API error:', errorData);
+      return false;
+    }
+
+    return true;
   } catch (error) {
     console.error('Failed to send Telegram message:', error);
     return false;

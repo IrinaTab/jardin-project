@@ -1,7 +1,7 @@
 // src/utils/sendRequest.ts
 
 import { CustomOrderRequest } from '../types';
-import { sendTelegramMessage } from './sendTelegramMessage';
+import { sendTelegramMessage, escapeHtml } from './sendTelegramMessage';
 
 export interface FeedbackRequestData {
   name: string;
@@ -61,29 +61,29 @@ function formatFeedbackMessage(data: FeedbackRequestData): string {
   lines.push('━━━━━━━━━━━━━━━━━━━━');
   lines.push('');
 
-  // Контактные данные
-  lines.push(`👤 <b>Имя:</b> ${data.name}`);
-  lines.push(`📞 <b>Телефон:</b> ${data.phone}`);
+  // Контактные данные (экранируем пользовательский ввод!)
+  lines.push(`👤 <b>Имя:</b> ${escapeHtml(data.name)}`);
+  lines.push(`📞 <b>Телефон:</b> ${escapeHtml(data.phone)}`);
   if (data.email) {
-    lines.push(`✉️ <b>Email:</b> ${data.email}`);
+    lines.push(`✉️ <b>Email:</b> ${escapeHtml(data.email)}`);
   }
 
   // Способ связи
   if (data.preferredMethod) {
     const methodKey = data.preferredMethod.toLowerCase();
-    const methodLabel = METHOD_LABELS[methodKey] || data.preferredMethod;
+    const methodLabel = METHOD_LABELS[methodKey] || escapeHtml(data.preferredMethod);
     lines.push(`💬 <b>Способ связи:</b> ${methodLabel}`);
   }
 
   lines.push('');
 
-  // Сообщение (обрезаем длинные, чтобы не превысить лимит 4096 символов)
+  // Сообщение (экранируем!)
   if (data.message) {
     const msg = data.message.length > 3000
       ? data.message.slice(0, 3000) + '...'
       : data.message;
     lines.push('📝 <b>Сообщение:</b>');
-    lines.push(msg);
+    lines.push(escapeHtml(msg));
     lines.push('');
   }
 
@@ -108,20 +108,21 @@ function formatCustomOrderMessage(data: CustomOrderRequest): string {
   lines.push('━━━━━━━━━━━━━━━━━━━━');
   lines.push('');
 
-  // Клиент
-  lines.push(`👤 <b>Имя:</b> ${data.name}`);
-  lines.push(`📞 <b>Телефон:</b> ${data.phone}`);
+  // Клиент (экранируем!)
+  lines.push(`👤 <b>Имя:</b> ${escapeHtml(data.name)}`);
+  lines.push(`📞 <b>Телефон:</b> ${escapeHtml(data.phone)}`);
   if (data.email) {
-    lines.push(`✉️ <b>Email:</b> ${data.email}`);
+    lines.push(`✉️ <b>Email:</b> ${escapeHtml(data.email)}`);
   }
   if (data.contactMethod) {
-    const methodLabel = METHOD_LABELS[data.contactMethod] || data.contactMethod;
+    const methodLabel = METHOD_LABELS[data.contactMethod] || escapeHtml(data.contactMethod);
     lines.push(`💬 <b>Способ связи:</b> ${methodLabel}`);
   }
 
   lines.push('');
 
-  // Состав заявки (из message)
+  // Состав заявки (из comment) — это HTML, который мы сами сгенерировали
+  // в CartModal, поэтому экранировать его НЕ нужно!
   if (data.comment) {
     lines.push('📦 <b>Состав заявки:</b>');
     lines.push('');
@@ -178,7 +179,11 @@ export async function sendRequest(
     }
 
     // Отправка в Telegram
-    await sendTelegramMessage(messageText);
+    const isSent = await sendTelegramMessage(messageText);
+
+    if (!isSent) {
+      throw new Error('Не удалось отправить сообщение в Telegram');
+    }
 
     // Небольшая задержка для реализма
     await new Promise((resolve) => setTimeout(resolve, 400));
