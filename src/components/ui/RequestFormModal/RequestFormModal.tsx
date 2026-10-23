@@ -7,7 +7,7 @@ import { useModal } from '../../../context/ModalContext';
 import { useLanguage } from '../../../context/LanguageContext';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
-import { formatPhone } from '../../../utils/formatPhone';
+import { formatPhone, isValidPhone } from '../../../utils/formatPhone';
 import { sendRequest } from '../../../utils/sendRequest';
 import { isSpamBot } from '../../../utils/antiSpam';
 
@@ -63,6 +63,10 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     }
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
       setErrorMsg(t.errors.invalidEmail);
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      setErrorMsg(t.errors.invalidPhone);
       return;
     }
     if (!agreed) {
