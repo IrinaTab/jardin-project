@@ -13,7 +13,7 @@ export interface CalculatorPageProps {
 
 export const CalculatorPage: React.FC<CalculatorPageProps> = ({ onNavigate: _onNavigate }) => {
     const { t } = useLanguage();
-    useDocumentTitle(t.nav.calculator);
+    useDocumentTitle(t.nav.calculator, t.customOrder.subtitle);
 
     return (
         <div className="calculator-page fade-in">

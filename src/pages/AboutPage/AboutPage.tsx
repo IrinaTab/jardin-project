@@ -19,7 +19,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   // ← ОДИН вызов useModal() со всеми нужными методами
   const { openPhotoModal, openVideoModal, openRequestModal } = useModal();
-  useDocumentTitle(t.aboutPage.title);
+  useDocumentTitle(t.aboutPage.title, t.aboutPage.subtitle);
 
   const [photoError, setPhotoError] = useState(false);
 

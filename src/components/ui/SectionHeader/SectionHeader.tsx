@@ -9,9 +9,10 @@ export interface SectionHeaderProps {
   title: string;
   subtitle?: string;
   align?: 'center' | 'left';
-  /** 'light' — светлая 3D-капсула, 'dark' — тёмная 3D-капсула */
   variant?: 'light' | 'dark';
   className?: string;
+  /** Позволяет задать тег заголовка (по умолчанию h2) */
+  as?: 'h1' | 'h2';
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -21,6 +22,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   align = 'center',
   variant = 'light',
   className = '',
+  as: HeadingTag = 'h2',
 }) => {
   const isDark = variant === 'dark';
 
@@ -39,9 +41,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         </div>
       )}
 
-      <h2 className="section-header-title">
+      <HeadingTag className="section-header-title">
         <span className="gold-accent">{title}</span>
-      </h2>
+      </HeadingTag>
 
       {subtitle && <p className="section-header-desc">{subtitle}</p>}
 

@@ -13,7 +13,7 @@ export interface PrivacyPolicyPageProps {
 
 export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
-  useDocumentTitle(t.privacy.title);
+  useDocumentTitle(t.privacy.title, t.privacy.intro);
 
   return (
     <div className="privacy-page fade-in">

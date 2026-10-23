@@ -17,7 +17,7 @@ export interface GalleryPageProps {
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   const { openRequestModal } = useModal();
-  useDocumentTitle(t.nav.gallery);
+  useDocumentTitle(t.nav.gallery, t.gallery.subtitle);
 
   return (
     <div className="gallery-page fade-in">
