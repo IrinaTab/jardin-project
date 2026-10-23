@@ -1,6 +1,6 @@
 // src/components/ui/RequestFormModal/RequestFormModal.tsx
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './RequestFormModal.css';
 import { Modal } from '../Modal';
 import { useModal } from '../../../context/ModalContext';
@@ -9,7 +9,8 @@ import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { formatPhone, isValidPhone } from '../../../utils/formatPhone';
 import { sendRequest } from '../../../utils/sendRequest';
-import { isSpamBot } from '../../../utils/antiSpam';
+import { useAntiSpam } from '../../../hooks/useAntiSpam';
+import { HoneypotField } from '../HoneypotField';
 
 export interface RequestFormModalProps {
   onNavigateToPrivacy?: () => void;
@@ -34,16 +35,8 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Honeypot + время открытия формы
-  const [honeypot, setHoneypot] = useState('');
-  const formStartTime = useRef<number>(Date.now());
-
-  // Сбрасываем таймер при каждом открытии модалки
-  React.useEffect(() => {
-    if (isRequestModalOpen) {
-      formStartTime.current = Date.now();
-    }
-  }, [isRequestModalOpen]);
+  // Хук антиспама (сбрасывает таймер при открытии)
+  const { honeypot, setHoneypot, checkBot } = useAntiSpam(isRequestModalOpen);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(formatPhone(e.target.value));
@@ -52,57 +45,26 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Валидация
-    if (!name.trim()) {
-      setErrorMsg(t.errors.requiredName);
-      return;
-    }
-    if (!email.trim()) {
-      setErrorMsg(t.errors.requiredEmail);
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
-      setErrorMsg(t.errors.invalidEmail);
-      return;
-    }
-    if (!isValidPhone(phone)) {
-      setErrorMsg(t.errors.invalidPhone);
-      return;
-    }
-    if (!agreed) {
-      setErrorMsg(t.errors.privacyRequired);
-      return;
-    }
+    if (!name.trim()) { setErrorMsg(t.errors.requiredName); return; }
+    if (!email.trim()) { setErrorMsg(t.errors.requiredEmail); return; }
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) { setErrorMsg(t.errors.invalidEmail); return; }
+    if (!isValidPhone(phone)) { setErrorMsg(t.errors.invalidPhone); return; }
+    if (!agreed) { setErrorMsg(t.errors.privacyRequired); return; }
 
-    // Антиспам: honeypot + время заполнения
-    if (isSpamBot(honeypot, formStartTime.current)) {
-      // Не отправляем, но показываем «успех» — бот не поймёт, что пойман
+    if (checkBot()) {
       console.info('[anti-spam] Заблокирована заявка от бота');
       setIsSuccess(true);
-      setName('');
-      setPhone('');
-      setEmail('');
-      setMessage('');
-      setAgreed(false);
-      setHoneypot('');
+      setName(''); setPhone(''); setEmail(''); setMessage(''); setAgreed(false);
       return;
     }
 
     setErrorMsg('');
     setIsSubmitting(true);
 
-    const formType =
-      requestModalMode === 'course'
-        ? 'course'
-        : requestModalMode === 'custom'
-          ? 'custom'
-          : 'question';
+    const formType = requestModalMode === 'course' ? 'course' : requestModalMode === 'custom' ? 'custom' : 'question';
 
     const res = await sendRequest({
-      name,
-      phone,
-      email,
-      message,
+      name, phone, email, message,
       preferredMethod: method,
       formType,
       language,
@@ -111,12 +73,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     setIsSubmitting(false);
     if (res.success) {
       setIsSuccess(true);
-      setName('');
-      setPhone('');
-      setEmail('');
-      setMessage('');
-      setAgreed(false);
-      setHoneypot('');
+      setName(''); setPhone(''); setEmail(''); setMessage(''); setAgreed(false); setHoneypot('');
     } else {
       setErrorMsg(t.errors.generalError);
     }
@@ -125,36 +82,14 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
   const handleClose = () => {
     setIsSuccess(false);
     setErrorMsg('');
-    setName('');
-    setPhone('');
-    setEmail('');
-    setMessage('');
-    setAgreed(false);
-    setHoneypot('');
+    setName(''); setPhone(''); setEmail(''); setMessage(''); setAgreed(false); setHoneypot('');
     setMethod('telegram');
     closeRequestModal();
   };
 
-  const submitLabel =
-    requestModalMode === 'course'
-      ? t.coursePage.heroCta
-      : requestModalMode === 'custom'
-        ? t.forms.sendRequest
-        : t.forms.send;
-
-  const successTitle =
-    requestModalMode === 'course'
-      ? t.forms.successCourseTitle
-      : requestModalMode === 'custom'
-        ? t.forms.successCustomTitle
-        : t.forms.successQuestionTitle;
-
-  const successDesc =
-    requestModalMode === 'course'
-      ? t.forms.successCourseDesc
-      : requestModalMode === 'custom'
-        ? t.forms.successCustomDesc
-        : t.forms.successQuestionDesc;
+  const submitLabel = requestModalMode === 'course' ? t.coursePage.heroCta : requestModalMode === 'custom' ? t.forms.sendRequest : t.forms.send;
+  const successTitle = requestModalMode === 'course' ? t.forms.successCourseTitle : requestModalMode === 'custom' ? t.forms.successCustomTitle : t.forms.successQuestionTitle;
+  const successDesc = requestModalMode === 'course' ? t.forms.successCourseDesc : requestModalMode === 'custom' ? t.forms.successCustomDesc : t.forms.successQuestionDesc;
 
   return (
     <Modal
@@ -168,34 +103,20 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           <Icon name="check" size={56} className="request-success__icon" />
           <h4 className="request-success__title">{successTitle}</h4>
           <p className="request-success__text">{successDesc}</p>
-          <Button
-            variant="primary"
-            onClick={handleClose}
-            className="request-success__btn"
-          >
+          <Button variant="primary" onClick={handleClose} className="request-success__btn">
             {t.cart.closeButton}
           </Button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="form">
-          {/* Honeypot — скрытое поле от ботов */}
-          <div className="honeypot-field" aria-hidden="true">
-            <label htmlFor="website-url">Website</label>
-            <input
-              type="text"
-              id="website-url"
-              name="website_url"
-              tabIndex={-1}
-              autoComplete="off"
-              value={honeypot}
-              onChange={(e) => setHoneypot(e.target.value)}
-            />
-          </div>
+          <HoneypotField
+            id="website-url"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
 
           <div className="form-group">
-            <label className="form-label">
-              {t.forms.name} *
-            </label>
+            <label className="form-label">{t.forms.name} *</label>
             <input
               type="text"
               required
@@ -207,9 +128,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              {t.forms.phone} *
-            </label>
+            <label className="form-label">{t.forms.phone} *</label>
             <input
               type="tel"
               required
@@ -221,9 +140,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              {t.forms.email} *
-            </label>
+            <label className="form-label">{t.forms.email} *</label>
             <input
               type="email"
               required
@@ -235,9 +152,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              {t.customOrder.contactMethod}
-            </label>
+            <label className="form-label">{t.customOrder.contactMethod}</label>
             <div className="form-method-grid form-method-grid--cols-3">
               {(['telegram', 'whatsapp', 'phone'] as const).map((m) => (
                 <button
@@ -253,9 +168,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              {t.forms.message}
-            </label>
+            <label className="form-label">{t.forms.message}</label>
             <textarea
               rows={3}
               value={message}
@@ -295,9 +208,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             </span>
           </label>
 
-          {errorMsg && (
-            <div className="form-error">{errorMsg}</div>
-          )}
+          {errorMsg && <div className="form-error">{errorMsg}</div>}
 
           <Button
             type="submit"

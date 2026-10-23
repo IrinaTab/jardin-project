@@ -1,6 +1,6 @@
 // src/components/ui/CartModal/CartModal.tsx
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import './CartModal.css';
 import { Modal } from '../Modal';
 import { useCart } from '../../../context/CartContext';
@@ -10,7 +10,8 @@ import { formatPhone, isValidPhone } from '../../../utils/formatPhone';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { sendRequest } from '../../../utils/sendRequest';
-import { isSpamBot } from '../../../utils/antiSpam';
+import { useAntiSpam } from '../../../hooks/useAntiSpam';
+import { HoneypotField } from '../HoneypotField';
 
 export interface CartModalProps {
   onNavigateToPrivacy?: () => void;
@@ -45,16 +46,8 @@ export const CartModal: React.FC<CartModalProps> = ({
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Honeypot — защита от спама
-  const [honeypot, setHoneypot] = useState('');
-  const formStartTime = useRef<number>(Date.now());
-
-  // Сбрасываем таймер при входе в форму
-  useEffect(() => {
-    if (view === 'form') {
-      formStartTime.current = Date.now();
-    }
-  }, [view]);
+  // Используем хук антиспама (таймер сбрасывается, когда view === 'form')
+  const { honeypot, setHoneypot, checkBot } = useAntiSpam(view === 'form');
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClientPhone(formatPhone(e.target.value));
@@ -80,32 +73,16 @@ export const CartModal: React.FC<CartModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!clientName.trim()) {
-      setError(t.errors.requiredName);
-      return;
-    }
-    if (!clientEmail.trim()) {
-      setError(t.errors.requiredEmail);
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(clientEmail.trim())) {
-      setError(t.errors.invalidEmail);
-      return;
-    }
-    if (!isValidPhone(clientPhone)) {
-      setError(t.errors.invalidPhone);
-      return;
-    }
-    if (!agreed) {
-      setError(t.errors.privacyRequired);
-      return;
-    }
+    if (!clientName.trim()) { setError(t.errors.requiredName); return; }
+    if (!clientEmail.trim()) { setError(t.errors.requiredEmail); return; }
+    if (!/^\S+@\S+\.\S+$/.test(clientEmail.trim())) { setError(t.errors.invalidEmail); return; }
+    if (!isValidPhone(clientPhone)) { setError(t.errors.invalidPhone); return; }
+    if (!agreed) { setError(t.errors.privacyRequired); return; }
 
-    // Антиспам: honeypot + время заполнения
-    if (isSpamBot(honeypot, formStartTime.current)) {
+    // Проверка через хук
+    if (checkBot()) {
       console.info('[anti-spam] Заблокирована заявка от бота (cart)');
       setView('success');
-      setHoneypot('');
       return;
     }
 
@@ -317,19 +294,11 @@ export const CartModal: React.FC<CartModalProps> = ({
         {/* FORM VIEW */}
         {view === 'form' && (
           <form onSubmit={handleSubmit} className="form">
-            {/* Honeypot — скрытое поле от ботов */}
-            <div className="honeypot-field" aria-hidden="true">
-              <label htmlFor="website-url-cart">Website</label>
-              <input
-                type="text"
-                id="website-url-cart"
-                name="website_url"
-                tabIndex={-1}
-                autoComplete="off"
-                value={honeypot}
-                onChange={(e) => setHoneypot(e.target.value)}
-              />
-            </div>
+            <HoneypotField
+              id="website-url-cart"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
 
             <div className="form-summary">
               <span className="form-summary-label">{t.cart.orderSummary}</span>
