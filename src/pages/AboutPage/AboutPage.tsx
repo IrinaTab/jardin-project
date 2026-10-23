@@ -134,9 +134,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 )}
               </div>
 
-              <div className="about-subscribe">
-                <SocialSubscribeBanner />
-              </div>
+              <SocialSubscribeBanner />
             </div>
 
             {/* ПРАВАЯ КОЛОНКА — заголовок, стандарты, текст */}

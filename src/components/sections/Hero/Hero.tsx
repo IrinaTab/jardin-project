@@ -60,7 +60,6 @@ export const Hero: React.FC<HeroProps> = ({ onOrderClick, onShopClick }) => {
               </Button>
             </div>
 
-            {/* Блок подписки на соцсети — прямо под кнопками */}
             <div className="hero__subscribe">
               <SocialSubscribeBanner />
             </div>

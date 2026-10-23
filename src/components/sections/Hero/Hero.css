@@ -197,7 +197,6 @@
   margin-top: var(--space-md);
   margin-bottom: var(--space-xl);
   display: flex;
-  justify-content: flex-start;
 }
 
 /* На планшете (≤ 1024px) и мобильном — блок по центру */

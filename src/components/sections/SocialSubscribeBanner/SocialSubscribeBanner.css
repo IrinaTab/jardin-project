@@ -339,6 +339,24 @@
 }
 
 /* ============================================
+   ОБЩАЯ ОБЁРТКА (вместо .hero__subscribe и т.д.)
+   ============================================ */
+
+.social-subscribe-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .social-subscribe-wrap .social-subscribe {
+        width: 100%;
+        max-width: 320px;
+        min-height: 130px;
+    }
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
