@@ -7,7 +7,7 @@ import { useModal } from '../../../context/ModalContext';
 import { useLanguage } from '../../../context/LanguageContext';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
-import { formatPhone } from '../../../utils/formatPhone';
+import { formatPhone, isValidPhone } from '../../../utils/formatPhone';
 import { sendRequest } from '../../../utils/sendRequest';
 import { isSpamBot } from '../../../utils/antiSpam';
 
@@ -63,6 +63,10 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
     }
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
       setErrorMsg(t.errors.invalidEmail);
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      setErrorMsg(t.errors.invalidPhone);
       return;
     }
     if (!agreed) {
@@ -173,7 +177,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </Button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="request-form">
+        <form onSubmit={handleSubmit} className="form">
           {/* Honeypot — скрытое поле от ботов */}
           <div className="honeypot-field" aria-hidden="true">
             <label htmlFor="website-url">Website</label>
@@ -188,8 +192,8 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             />
           </div>
 
-          <div className="request-form__group">
-            <label className="request-form__label">
+          <div className="form-group">
+            <label className="form-label">
               {t.forms.name} *
             </label>
             <input
@@ -198,12 +202,12 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t.forms.namePlaceholder}
-              className="request-form__input"
+              className="form-input"
             />
           </div>
 
-          <div className="request-form__group">
-            <label className="request-form__label">
+          <div className="form-group">
+            <label className="form-label">
               {t.forms.phone} *
             </label>
             <input
@@ -212,12 +216,12 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
               value={phone}
               onChange={handlePhoneChange}
               placeholder={t.forms.phonePlaceholder}
-              className="request-form__input"
+              className="form-input"
             />
           </div>
 
-          <div className="request-form__group">
-            <label className="request-form__label">
+          <div className="form-group">
+            <label className="form-label">
               {t.forms.email} *
             </label>
             <input
@@ -226,20 +230,20 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.forms.emailPlaceholder}
-              className="request-form__input"
+              className="form-input"
             />
           </div>
 
-          <div className="request-form__group">
-            <label className="request-form__label">
+          <div className="form-group">
+            <label className="form-label">
               {t.customOrder.contactMethod}
             </label>
-            <div className="request-form__method-grid">
+            <div className="form-method-grid form-method-grid--cols-3">
               {(['telegram', 'whatsapp', 'phone'] as const).map((m) => (
                 <button
                   key={m}
                   type="button"
-                  className={`request-form__method-btn ${method === m ? 'request-form__method-btn--active' : ''}`}
+                  className={`form-method-btn ${method === m ? 'form-method-btn--active' : ''}`}
                   onClick={() => setMethod(m)}
                 >
                   {t.customOrder.methods[m]}
@@ -248,8 +252,8 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
             </div>
           </div>
 
-          <div className="request-form__group">
-            <label className="request-form__label">
+          <div className="form-group">
+            <label className="form-label">
               {t.forms.message}
             </label>
             <textarea
@@ -257,24 +261,24 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t.forms.messagePlaceholder}
-              className="request-form__input request-form__textarea"
+              className="form-input form-input--textarea"
             />
           </div>
 
-          <label className="request-form__agreement">
+          <label className="form-agreement">
             <input
               type="checkbox"
               required
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
-              className="request-form__checkbox"
+              className="form-checkbox"
             />
             <span>
               {t.customOrder.privacyNotice}{' '}
               {onNavigateToPrivacy ? (
                 <button
                   type="button"
-                  className="request-form__privacy-link"
+                  className="form-privacy-link"
                   onClick={(e) => {
                     e.preventDefault();
                     handleClose();
@@ -284,7 +288,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
                   {t.customOrder.privacyLink}
                 </button>
               ) : (
-                <span className="request-form__privacy-link">
+                <span className="form-privacy-link">
                   {t.customOrder.privacyLink}
                 </span>
               )}
@@ -292,7 +296,7 @@ export const RequestFormModal: React.FC<RequestFormModalProps> = ({ onNavigateTo
           </label>
 
           {errorMsg && (
-            <div className="request-form__error">{errorMsg}</div>
+            <div className="form-error">{errorMsg}</div>
           )}
 
           <Button

@@ -316,7 +316,7 @@ export const CartModal: React.FC<CartModalProps> = ({
 
         {/* FORM VIEW */}
         {view === 'form' && (
-          <form onSubmit={handleSubmit} className="cart-form">
+          <form onSubmit={handleSubmit} className="form">
             {/* Honeypot — скрытое поле от ботов */}
             <div className="honeypot-field" aria-hidden="true">
               <label htmlFor="website-url-cart">Website</label>
@@ -331,57 +331,57 @@ export const CartModal: React.FC<CartModalProps> = ({
               />
             </div>
 
-            <div className="cart-form-summary">
-              <span className="cart-form-summary-label">{t.cart.orderSummary}</span>
-              <span className="cart-form-summary-value">
+            <div className="form-summary">
+              <span className="form-summary-label">{t.cart.orderSummary}</span>
+              <span className="form-summary-value">
                 {items.length} поз. · {formatPrice(totalPrice, '€', language)}
               </span>
             </div>
 
-            <div className="cart-form-group">
-              <label className="cart-form-label">{t.forms.name} *</label>
+            <div className="form-group">
+              <label className="form-label">{t.forms.name} *</label>
               <input
                 type="text"
                 required
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 placeholder={t.forms.namePlaceholder}
-                className="cart-form-input"
+                className="form-input"
               />
             </div>
 
-            <div className="cart-form-group">
-              <label className="cart-form-label">{t.forms.phone} *</label>
+            <div className="form-group">
+              <label className="form-label">{t.forms.phone} *</label>
               <input
                 type="tel"
                 required
                 value={clientPhone}
                 onChange={handlePhoneChange}
                 placeholder={t.forms.phonePlaceholder}
-                className="cart-form-input"
+                className="form-input"
               />
             </div>
 
-            <div className="cart-form-group">
-              <label className="cart-form-label">{t.forms.email} *</label>
+            <div className="form-group">
+              <label className="form-label">{t.forms.email} *</label>
               <input
                 type="email"
                 required
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
                 placeholder={t.forms.emailPlaceholder}
-                className="cart-form-input"
+                className="form-input"
               />
             </div>
 
-            <div className="cart-form-group">
-              <label className="cart-form-label">{t.customOrder.contactMethod}</label>
-              <div className="cart-method-grid">
+            <div className="form-group">
+              <label className="form-label">{t.customOrder.contactMethod}</label>
+              <div className="form-method-grid form-method-grid--cols-4">
                 {(['telegram', 'whatsapp', 'phone', 'email'] as const).map((m) => (
                   <button
                     key={m}
                     type="button"
-                    className={`cart-method-btn ${contactMethod === m ? 'cart-method-btn--active' : ''}`}
+                    className={`form-method-btn ${contactMethod === m ? 'form-method-btn--active' : ''}`}
                     onClick={() => setContactMethod(m)}
                   >
                     {t.customOrder.methods[m]}
@@ -390,29 +390,30 @@ export const CartModal: React.FC<CartModalProps> = ({
               </div>
             </div>
 
-            <div className="cart-form-group">
-              <label className="cart-form-label">{t.cart.commentLabel}</label>
+            <div className="form-group">
+              <label className="form-label">{t.cart.commentLabel}</label>
               <textarea
                 rows={3}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder={t.cart.commentPlaceholder}
-                className="cart-form-input cart-form-textarea"
+                className="form-input form-input--textarea"
               />
             </div>
 
-            <label className="cart-agreement">
+            <label className="form-agreement">
               <input
                 type="checkbox"
                 checked={agreed}
                 onChange={(e) => setAgreed(e.target.checked)}
+                className="form-checkbox"
               />
               <span>
                 {t.customOrder.privacyNotice}{' '}
                 {onNavigateToPrivacy && (
                   <button
                     type="button"
-                    className="cart-privacy-link"
+                    className="form-privacy-link"
                     onClick={(e) => {
                       e.preventDefault();
                       closeCart();
@@ -425,7 +426,7 @@ export const CartModal: React.FC<CartModalProps> = ({
               </span>
             </label>
 
-            {error && <div className="cart-error-msg">{error}</div>}
+            {error && <div className="form-error">{error}</div>}
 
             <div className="cart-form-actions">
               <Button

@@ -1,4 +1,16 @@
-/* src/pages/ContactsPage/ContactsPage.css */
+/* src/pages/ContactsPage/ContactsPage.css
+ *
+ * Стили страницы контактов.
+ * Поля формы (инпуты, лейблы, чекбокс, ссылка на политику,
+ * ошибка) — в src/styles/form-controls.css.
+ * Здесь остаются только уникальные для страницы блоки:
+ *   - contacts-page, contacts-grid (лейаут)
+ *   - contacts-info-card, contacts-item* (левая колонка)
+ *   - contacts-messengers* / contacts-messenger-btn
+ *   - contacts-form-card (обёртка правой колонки)
+ *   - contacts-form__title / __subtitle (заголовок формы)
+ *   - contacts-success* (success-состояние)
+ */
 
 .contacts-page {
   padding-top: 40px;
@@ -26,7 +38,7 @@
   padding: 40px 32px;
   border-radius: var(--radius-lg);
 
-  /* Светлая 3D-капсула как hero__badge */
+  /* Светлая 3D-капсула */
   background: var(--gradient-capsule-light);
   border: 1px solid var(--gold-dark-22);
   box-shadow:
@@ -149,7 +161,8 @@
 }
 
 /* ============================================
-   RIGHT CARD — Form
+   RIGHT CARD — Form wrapper
+   (сами поля формы — в form-controls.css)
    ============================================ */
 
 .contacts-form-card {
@@ -165,21 +178,14 @@
     0 14px 32px var(--gold-dark-22),
     0 24px 56px var(--gold-dark-15);
 
-  /* Центрируем содержимое по вертикали, если оно короче */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 /* ============================================
-   FORM
+   FORM HEADER — заголовок и подзаголовок
    ============================================ */
-
-.contacts-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
 
 .contacts-form__title {
   font-family: var(--font-heading);
@@ -193,118 +199,6 @@
   font-size: 0.92rem;
   color: var(--color-text-dark-muted);
   margin-bottom: 8px;
-}
-
-.contacts-form__group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.contacts-form__label {
-  font-size: 0.82rem;
-  color: var(--gold-dark);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.contacts-form__input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-dark);
-  outline: none;
-
-  background: var(--white-95);
-  border: 1px solid var(--gold-dark-22);
-
-  box-shadow:
-    inset 0 1px 2px var(--gold-dark-08);
-
-  font-family: inherit;
-  font-size: 0.95rem;
-
-  transition: all var(--transition-fast);
-}
-
-.contacts-form__input::placeholder {
-  color: var(--color-text-dark-subtle);
-}
-
-.contacts-form__input:focus {
-  border-color: var(--gold);
-  box-shadow:
-    inset 0 1px 2px var(--gold-dark-08),
-    0 0 0 3px var(--gold-22);
-}
-
-/* ============================================
-   AUTOFILL — убираем синий/жёлтый фон Chrome
-   ============================================ */
-
-.contacts-form__input:-webkit-autofill,
-.contacts-form__input:-webkit-autofill:hover,
-.contacts-form__input:-webkit-autofill:focus,
-.contacts-form__input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-  box-shadow: 0 0 0 1000px #ffffff inset;
-  -webkit-text-fill-color: var(--color-text-dark);
-  caret-color: var(--color-text-dark);
-  /* Задерживаем перекраску фона браузером на 5000 секунд */
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-.contacts-form__input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-  box-shadow: 0 0 0 1000px #ffffff inset;
-}
-
-.contacts-form__textarea {
-  resize: vertical;
-  min-height: 90px;
-}
-
-/* ---------- Agreement ---------- */
-
-.contacts-form__agreement {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.82rem;
-  color: var(--color-text-dark-muted);
-  cursor: pointer;
-  line-height: 1.5;
-}
-
-.contacts-form__checkbox {
-  accent-color: var(--gold);
-  margin-top: 3px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.contacts-form__privacy-link {
-  color: var(--gold-dark);
-  text-decoration: underline;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: inherit;
-  padding: 0;
-  font-weight: 600;
-}
-
-.contacts-form__privacy-link:hover {
-  color: var(--gold);
-}
-
-.contacts-form__error {
-  color: #d32f2f;
-  font-size: 0.82rem;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(211, 47, 47, 0.08);
-  border: 1px solid rgba(211, 47, 47, 0.25);
 }
 
 /* ============================================

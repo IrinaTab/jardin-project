@@ -244,7 +244,7 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="contacts-form">
+              <form onSubmit={handleSubmit} className="form">
                 {/* Honeypot — скрытое поле от ботов */}
                 <div className="honeypot-field" aria-hidden="true">
                   <label htmlFor="website-url-contacts">Website</label>
@@ -264,8 +264,8 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                   <p className="contacts-form__subtitle">{t.contacts.formSubtitle}</p>
                 </div>
 
-                <div className="contacts-form__group">
-                  <label className="contacts-form__label">
+                <div className="form-group">
+                  <label className="form-label">
                     {t.forms.name} *
                   </label>
                   <input
@@ -274,12 +274,12 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t.forms.namePlaceholder}
-                    className="contacts-form__input"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="contacts-form__group">
-                  <label className="contacts-form__label">
+                <div className="form-group">
+                  <label className="form-label">
                     {t.forms.phone} *
                   </label>
                   <input
@@ -288,12 +288,12 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                     value={phone}
                     onChange={handlePhoneChange}
                     placeholder={t.forms.phonePlaceholder}
-                    className="contacts-form__input"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="contacts-form__group">
-                  <label className="contacts-form__label">
+                <div className="form-group">
+                  <label className="form-label">
                     {t.forms.email} *
                   </label>
                   <input
@@ -302,12 +302,12 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={t.forms.emailPlaceholder}
-                    className="contacts-form__input"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="contacts-form__group">
-                  <label className="contacts-form__label">
+                <div className="form-group">
+                  <label className="form-label">
                     {t.forms.message}
                   </label>
                   <textarea
@@ -315,17 +315,17 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={t.forms.messagePlaceholder}
-                    className="contacts-form__input contacts-form__textarea"
+                    className="form-input form-input--textarea"
                   />
                 </div>
 
-                <label className="contacts-form__agreement">
+                <label className="form-agreement">
                   <input
                     type="checkbox"
                     required
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
-                    className="contacts-form__checkbox"
+                    className="form-checkbox"
                   />
                   <span>
                     {t.customOrder.privacyNotice}{' '}
@@ -335,7 +335,7 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                         e.preventDefault();
                         onNavigate('privacy');
                       }}
-                      className="contacts-form__privacy-link"
+                      className="form-privacy-link"
                     >
                       {t.customOrder.privacyLink}
                     </button>
@@ -343,7 +343,7 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
                 </label>
 
                 {errorMsg && (
-                  <div className="contacts-form__error">{errorMsg}</div>
+                  <div className="form-error">{errorMsg}</div>
                 )}
 
                 <Button type="submit" variant="primary" size="lg" disabled={isSubmitting}>
