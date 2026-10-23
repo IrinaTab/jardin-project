@@ -31,8 +31,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate }) => {
 
       <GallerySection isPreview={false} />
 
-      {/* Блок подписки на соцсети перед CTA */}
-      <div className="gallery-page__subscribe">
+      <div className="section">
         <SocialSubscribeBanner />
       </div>
 

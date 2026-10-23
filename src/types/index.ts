@@ -12,22 +12,6 @@ export interface LocalizedText {
   es: string;
 }
 
-export type ProductCategory = 'wigs' | 'toppers' | 'wefts' | 'bangs' | 'strands';
-
-export interface Product {
-  id: string;
-  name: LocalizedText;
-  category: ProductCategory;
-  description: LocalizedText;
-  price: number;
-  image: string;
-  hairType: LocalizedText;
-  lengthCm: number;
-  density?: string;
-  isPopular?: boolean;
-  inStock: boolean;
-}
-
 export interface HairColor {
   id: string;
   name: LocalizedText;

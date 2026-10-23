@@ -1,7 +1,7 @@
 // src/context/ModalContext.tsx
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { GalleryItem, Product, VideoItem, RequestModalMode } from '../types';
+import { GalleryItem, VideoItem, RequestModalMode } from '../types';
 
 interface ModalContextType {
   activePhoto: GalleryItem | null;
@@ -22,10 +22,6 @@ interface ModalContextType {
   contactChoiceData: { title?: string; onSelectMethod?: (method: string) => void } | null;
   openContactChoiceModal: (data?: { title?: string; onSelectMethod?: (method: string) => void }) => void;
   closeContactChoiceModal: () => void;
-
-  quickViewProduct: Product | null;
-  openQuickView: (product: Product) => void;
-  closeQuickView: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -41,7 +37,6 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     title?: string;
     onSelectMethod?: (method: string) => void;
   } | null>(null);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   const openPhotoModal = (item: GalleryItem) => setActivePhoto(item);
   const closePhotoModal = () => setActivePhoto(null);
@@ -65,13 +60,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setContactChoiceData(data || null);
     setIsContactChoiceOpen(true);
   };
+
   const closeContactChoiceModal = () => {
     setIsContactChoiceOpen(false);
     setContactChoiceData(null);
   };
-
-  const openQuickView = (product: Product) => setQuickViewProduct(product);
-  const closeQuickView = () => setQuickViewProduct(null);
 
   return (
     <ModalContext.Provider
@@ -91,9 +84,6 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         contactChoiceData,
         openContactChoiceModal,
         closeContactChoiceModal,
-        quickViewProduct,
-        openQuickView,
-        closeQuickView,
       }}
     >
       {children}
