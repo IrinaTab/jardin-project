@@ -12,18 +12,26 @@ export function useDocumentTitle(
       .querySelector('meta[name="description"]')
       ?.getAttribute('content') ?? '';
 
-    document.title = title
-      ? `${title} | Jardin — Постижерное ателье`
-      : 'Jardin — Постижерное ателье';
+    const fullTitle = title ? `${title} | Jardin — Постижерное ателье` : 'Jardin — Постижерное ателье';
+
+    document.title = fullTitle;
 
     if (description) {
-      let meta = document.querySelector('meta[name="description"]');
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', 'description');
-        document.head.appendChild(meta);
+      // Обновляем обычный description
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
       }
-      meta.setAttribute('content', description);
+      metaDesc.setAttribute('content', description);
+
+      // Обновляем Open Graph
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', fullTitle);
+
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', description);
     }
 
     return () => {

@@ -17,7 +17,7 @@ export interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
-  useDocumentTitle(t.nav.home);
+  useDocumentTitle(t.nav.home, t.hero.subtitle);
   const { openRequestModal } = useModal();
 
   return (

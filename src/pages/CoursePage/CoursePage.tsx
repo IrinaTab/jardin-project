@@ -15,7 +15,7 @@ export interface CoursePageProps {
 export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate }) => {
     const { t } = useLanguage();
     const { openRequestModal, openVideoModal } = useModal();
-    useDocumentTitle(t.coursePage.title);
+    useDocumentTitle(t.coursePage.title, t.coursePage.subtitle);
 
     /**
      * Видео от мастера — открывается в модалке по клику.

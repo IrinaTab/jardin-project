@@ -20,7 +20,7 @@ export interface ContactsPageProps {
 
 export const ContactsPage: React.FC<ContactsPageProps> = ({ onNavigate }) => {
   const { language, t } = useLanguage();
-  useDocumentTitle(t.nav.contacts);
+  useDocumentTitle(t.nav.contacts, t.contacts.subtitle);
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
