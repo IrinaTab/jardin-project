@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { PageType } from './types';
 import { LanguageProvider } from './context/LanguageContext';
 import { CartProvider } from './context/CartContext';
@@ -13,14 +13,19 @@ import { PhotoModal } from './components/ui/PhotoModal';
 import { RequestFormModal } from './components/ui/RequestFormModal';
 import { ContactChoiceModal } from './components/ui/ContactChoiceModal';
 import { VideoModal } from './components/ui/VideoModal';
+import { PageLoader } from './components/ui/PageLoader';
 
-import { HomePage } from './pages/HomePage';
-import { GalleryPage } from './pages/GalleryPage';
-import { AboutPage } from './pages/AboutPage';
-import { ContactsPage } from './pages/ContactsPage';
-import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
-import { CalculatorPage } from './pages/CalculatorPage';
-import { CoursePage } from './pages/CoursePage';
+// ============================================
+// ЛЕНИВАЯ ЗАГРУЗКА СТРАНИЦ (Code-splitting)
+// ============================================
+
+const HomePage = React.lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+const GalleryPage = React.lazy(() => import('./pages/GalleryPage').then(m => ({ default: m.GalleryPage })));
+const AboutPage = React.lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const ContactsPage = React.lazy(() => import('./pages/ContactsPage').then(m => ({ default: m.ContactsPage })));
+const PrivacyPolicyPage = React.lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
+const CalculatorPage = React.lazy(() => import('./pages/CalculatorPage').then(m => ({ default: m.CalculatorPage })));
+const CoursePage = React.lazy(() => import('./pages/CoursePage').then(m => ({ default: m.CoursePage })));
 
 const VALID_PAGES: PageType[] = [
   'home',
@@ -75,13 +80,16 @@ const AppContent: React.FC = () => {
       <Header activePage={currentPage} onNavigate={handleNavigate} />
 
       <main className="app-main">
-        {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
-        {currentPage === 'gallery' && <GalleryPage onNavigate={handleNavigate} />}
-        {currentPage === 'about' && <AboutPage onNavigate={handleNavigate} />}
-        {currentPage === 'contacts' && <ContactsPage onNavigate={handleNavigate} />}
-        {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={handleNavigate} />}
-        {currentPage === 'calculator' && <CalculatorPage onNavigate={handleNavigate} />}
-        {currentPage === 'course' && <CoursePage onNavigate={handleNavigate} />}
+        {/* Suspense показывает лоадер, пока грузится код страницы */}
+        <Suspense fallback={<PageLoader />}>
+          {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
+          {currentPage === 'gallery' && <GalleryPage onNavigate={handleNavigate} />}
+          {currentPage === 'about' && <AboutPage onNavigate={handleNavigate} />}
+          {currentPage === 'contacts' && <ContactsPage onNavigate={handleNavigate} />}
+          {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={handleNavigate} />}
+          {currentPage === 'calculator' && <CalculatorPage onNavigate={handleNavigate} />}
+          {currentPage === 'course' && <CoursePage onNavigate={handleNavigate} />}
+        </Suspense>
       </main>
 
       <Footer onNavigate={handleNavigate} />
