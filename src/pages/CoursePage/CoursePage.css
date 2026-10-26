@@ -444,3 +444,53 @@
         transform: none;
     }
 }
+
+/* ============================================
+   ЗАГЛУШКА ВМЕСТО ВИДЕО (ПОСТЕР + ТЕКСТ)
+   ============================================ */
+
+.course-video {
+    cursor: default;
+    /* Убираем курсор-руку */
+}
+
+/* Скрываем эффект наведения, так как это теперь не ссылка */
+.course-video:hover .course-video__img {
+    transform: none;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+        inset 0 0 20px rgba(245, 215, 110, 0.12),
+        0 12px 40px rgba(139, 105, 20, 0.32),
+        0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.course-video:hover .course-video__glow {
+    opacity: 0.8;
+    filter: blur(24px);
+}
+
+/* Слой с затемнением и текстом поверх картинки */
+.course-video__placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+
+    /* Полупрозрачное затемнение, чтобы текст читался на фоне картинки */
+    background: rgba(10, 10, 10, 0.6);
+    border-radius: inherit;
+}
+
+.course-video__placeholder-text {
+    font-family: var(--font-accent);
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 400px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
