@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+// src/pages/CoursePage/CoursePage.tsx
+
+import React from 'react';
 import './CoursePage.css';
-import { PageType, VideoItem } from '../../types';
+import { PageType } from '../../types';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useLanguage } from '../../context/LanguageContext';
-import { useModal } from '../../context/ModalContext';
 import { SectionHeader } from '../../components/ui/SectionHeader';
-import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
 
 export interface CoursePageProps {
@@ -14,33 +14,7 @@ export interface CoursePageProps {
 
 export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate }) => {
     const { t } = useLanguage();
-    const { openRequestModal, openVideoModal } = useModal();
     useDocumentTitle(t.coursePage.title, t.coursePage.subtitle);
-
-    /**
-     * Видео от мастера — открывается в модалке по клику.
-     */
-    const courseVideo: VideoItem = useMemo(
-        () => ({
-            id: 'course-intro-video',
-            videoUrl: '/videos/course-intro.mp4',
-            posterUrl: '/videos/course-intro-poster.webp',
-            title: {
-                ru: 'Видео от мастера',
-                en: 'Message from the Master',
-                es: 'Mensaje de la Maestra',
-            },
-            description: {
-                ru: 'Короткое видео о курсе, профессии и подходе к обучению.',
-                en: 'Short video about the course, the profession and the approach to teaching.',
-                es: 'Breve vídeo sobre el curso, la profesión y el enfoque de la enseñanza.',
-            },
-        }),
-        []
-    );
-
-    const handleOpenVideo = () => openVideoModal(courseVideo);
-    const handleEnroll = () => openRequestModal(t.coursePage.formTitle, 'course');
 
     const learnItems = [
         t.coursePage.learnItem1,
@@ -64,6 +38,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
             <section className="section course-hero-section">
                 <div className="container">
                     <SectionHeader
+                        as="h1"
                         badge={t.coursePage.badge}
                         title={t.coursePage.title}
                         subtitle={t.coursePage.subtitle}
@@ -75,36 +50,31 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
             <section className="section course-main-section">
                 <div className="container">
                     <div className="course-main-grid">
-                        {/* Видео */}
-                        <div
-                            className="course-video"
-                            onClick={handleOpenVideo}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault();
-                                    handleOpenVideo();
-                                }
-                            }}
-                            aria-label={t.coursePage.heroVideoTitle}
-                        >
+
+                        {/* Обертка сохранена для визуала */}
+                        <div className="course-video" style={{ cursor: 'default' }}>
                             <div className="course-video__glow" aria-hidden />
-                            <video
+
+                            {/* Постер (картинка) вместо видео */}
+                            <img
+                                src="/videos/course-intro-poster.webp"
+                                alt="Видео-обзор на курс скоро появится"
                                 className="course-video__img"
-                                src="/videos/course-intro.mp4"
-                                poster="/videos/course-intro-poster.webp"
-                                muted
-                                playsInline
-                                preload="metadata"
-                                aria-hidden
                             />
-                            <div className="course-video__play-btn" aria-hidden>
-                                <Icon name="play" size={32} />
+
+                            {/* Затемнение и текст по центру */}
+                            <div className="course-video__placeholder">
+                                <p className="course-video__placeholder-text">
+                                    {t.coursePage.videoComingSoon}
+                                </p>
                             </div>
+
+                            {/* Подпись внизу закомментирована, как вы просили */}
+                            {/* 
                             <div className="course-video__caption">
                                 {t.coursePage.heroVideoTitle}
-                            </div>
+                            </div> 
+                            */}
                         </div>
 
                         {/* Описание курса */}
@@ -114,6 +84,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
                             <p>{t.coursePage.aboutCourseText2}</p>
                             <p>{t.coursePage.aboutCourseText3}</p>
 
+                            {/* Кнопка временно скрыта */}
+                            {/* 
                             <div className="course-content__cta">
                                 <Button
                                     variant="primary"
@@ -123,7 +95,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
                                 >
                                     {t.coursePage.heroCta}
                                 </Button>
-                            </div>
+                            </div> 
+                            */}
                         </div>
                     </div>
                 </div>
@@ -133,7 +106,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
             <section className="section course-learn-section">
                 <div className="container">
                     <SectionHeader
-                        badge="Программа"
+                        badge={t.coursePage.programBadge}
                         title={t.coursePage.whatYouLearnTitle}
                     />
                     <div className="course-learn-card">
@@ -155,7 +128,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
             <section className="section course-format-section">
                 <div className="container">
                     <SectionHeader
-                        badge="Формат"
+                        badge={t.coursePage.formatBadge}
                         title={t.coursePage.formatTitle}
                     />
                     <div className="course-format-grid">
@@ -169,7 +142,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
                 </div>
             </section>
 
-            {/* ФИНАЛЬНЫЙ CTA */}
+            {/* ФИНАЛЬНЫЙ CTA (Готовы начать?) — Закомментирован */}
+            {/* 
             <section className="section course-final-section">
                 <div className="container">
                     <div className="course-final-card">
@@ -185,7 +159,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({ onNavigate: _onNavigate 
                         </Button>
                     </div>
                 </div>
-            </section>
+            </section> 
+            */}
         </div>
     );
 };
